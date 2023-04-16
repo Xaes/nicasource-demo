@@ -1,0 +1,25 @@
+{
+    "name": "Nicasource",
+    "packageManager": "yarn@3.5.0",
+    "description": "NicaSource backend.",
+    "type": "module",
+    "authors": [
+        "Diego Balmaceda <diego@xaes.dev>"
+    ],
+    "scripts": {
+        "backend-dev": "yarn workspace @nicasource/backend dev"
+    },
+    "workspaces": [
+        "./packages/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Xaes/nicasource-demo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Xaes/nicasource-demo/issues"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
