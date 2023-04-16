@@ -1,0 +1,143 @@
+@startuml domain
+hide empty members
+
+namespace common.repository {
+  interface IRepository
+}
+
+namespace common.entity {
+  abstract Entity
+}
+
+namespace domain.video {
+
+  class AssetManager <<aggregation>> {
+    addCreator()
+    findCreatorById()
+    findCreatorByEmail()
+    ..
+    addVideo()
+    findVideoById()
+    findPublishVideos()
+    findVideosByCreatorId()
+    ..
+    findLikedVideosByCreatorId()
+    ..
+    findFollowingByCreatorId()
+  }
+
+  class Video <<entity>> {
+    id
+    title
+    description
+    publishedAt
+    isPublished
+    videoUrl
+    createdAt
+    updatedAt
+
+    newInstance()
+    update()
+    publish()
+    unpublish()
+    like()
+  }
+
+  class Like <<entity>> {
+    id
+    createdAt
+
+    newInstance()
+  }
+
+  class Follow <<entity>> {
+    id
+    createdAt
+
+    newInstance()
+  }
+
+
+  class Creator <<entity>> {
+    id
+    name
+    email
+    createdAt
+    updatedAt
+
+    newInstance()
+    follow()
+    unfollow()
+  }
+
+
+  AssetManager ..> Video
+  AssetManager ..> Like
+  Video "*"--> Creator
+  Like "*" ---> Creator
+
+  Follow "0..*" -->  "follower" Creator
+  Follow "0..*" --> "following" Creator
+}
+
+namespace domain.auth {
+
+  enum CredentialType {
+    PASSWORD
+    TOTP
+  }
+
+  class SessionToken <<value_object>> {
+    accessToken
+    refreshToken
+    expiredAt
+  }
+
+  class Auth <<aggregation>> {
+    - privateKey
+
+    + addCredential()
+    + authenticate()
+    + tokenRefresh()
+    - generateJWT()
+    - findCredentialByUserId()
+  }
+
+  interface User {
+    id
+    email
+  }
+
+  class Credential <<entity>> {
+    id
+    credentialType: CredentialType
+    credentialValue
+
+    newInstance()
+    verify()
+  }
+
+  Auth ..> User
+  Auth ..> Credential
+  Credential --> User
+}
+
+namespace domain.video.repository {
+  interface IVideoRepository
+  interface ICreatorRepository
+  interface ILikeRepository
+  interface IFollowRepository
+}
+
+namespace domain.auth.repository {
+  interface ICredentialRepository
+}
+
+domain.video.Creator ...|> domain.auth.User
+
+domain.video ..|> common.entity
+domain.auth ..|> common.entity
+
+domain.video.repository ...|> common.repository
+domain.auth.repository ..|> common.repository
+@enduml

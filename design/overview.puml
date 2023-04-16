@@ -1,0 +1,46 @@
+@startuml VideoCreatorBackend
+package domain {
+    [video]
+    [auth]
+}
+
+package common {
+    [entity]
+    [repository]
+    [error]
+    [logger]
+}
+
+package api {
+    [server]
+    [routes]
+    [auth]
+    package resources {
+        [router]
+        [model]
+        [handler]
+    }
+}
+
+package persistence {
+    [db]
+    [sequelizeRepository]
+}
+
+package tests {
+    [unit]
+    [integration]
+    [e2e]
+}
+
+package bootstrap {
+    [migrations]
+    [seeders]
+}
+
+domain ...> common
+api ...> common
+persistence ...> common
+api ..> domain
+api ..> persistence
+@enduml
