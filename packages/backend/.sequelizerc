@@ -1,5 +1,5 @@
 const path = require("path");
 
 module.exports = {
-    "config": path.resolve("config", "migrationConfig.cjs")
+    "config": path.resolve("config", "migrations.cjs")
 }
