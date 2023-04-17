@@ -6,7 +6,7 @@ namespace common.repository {
 }
 
 namespace common.entity {
-  abstract Entity
+  class Base
 }
 
 namespace domain.video {
@@ -20,10 +20,6 @@ namespace domain.video {
     findVideoById()
     findPublishVideos()
     findVideosByCreatorId()
-    ..
-    findLikedVideosByCreatorId()
-    ..
-    findFollowingByCreatorId()
   }
 
   class Video <<entity>> {
@@ -36,7 +32,6 @@ namespace domain.video {
     createdAt
     updatedAt
 
-    newInstance()
     update()
     publish()
     unpublish()
@@ -46,15 +41,11 @@ namespace domain.video {
   class Like <<entity>> {
     id
     createdAt
-
-    newInstance()
   }
 
   class Follow <<entity>> {
     id
     createdAt
-
-    newInstance()
   }
 
 
@@ -65,7 +56,6 @@ namespace domain.video {
     createdAt
     updatedAt
 
-    newInstance()
     follow()
     unfollow()
   }
@@ -74,7 +64,8 @@ namespace domain.video {
   AssetManager ..> Video
   AssetManager ..> Like
   Video "*"--> Creator
-  Like "*" ---> Creator
+  Like "*" ---> "likedBy" Creator
+  Like "*" ---> "likes" Video
 
   Follow "0..*" -->  "follower" Creator
   Follow "0..*" --> "following" Creator
@@ -113,7 +104,6 @@ namespace domain.auth {
     credentialType: CredentialType
     credentialValue
 
-    newInstance()
     verify()
   }
 
