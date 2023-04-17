@@ -1,31 +1,42 @@
-import Entity, {EntityAttributes} from "../../common/entity";
-import {Column, ForeignKey, Table} from "sequelize-typescript";
-import {Creator} from "./creator";
+import { DataTypes, Model } from "sequelize";
+import SequelizeClient from "../../../persistence/database";
 
-export interface FollowAttributes extends EntityAttributes {
-    follower: string;
-    following: string;
+export interface FollowAttributes {
+    followerId: string;
+    followingId: string;
 }
 
 export interface FollowParams {
-    follower: string;
-    following: string;
+    followerId: string;
+    followingId: string;
 }
 
-@Table({
+export class Follow extends Model<FollowAttributes, FollowParams> {
+    followerId!: string;
+    followingId!: string;
+}
+
+export const FollowModel = Follow.init({
+    followerId: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        validate: {
+            isUUID: 4
+        }
+    },
+    followingId: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        validate: {
+            isUUID: 4
+        }
+    }
+}, {
+    sequelize: SequelizeClient,
     tableName: "follow",
     freezeTableName: true,
     timestamps: true,
     indexes: [
         { fields: ["followerId", "followingId"], unique: true }
     ]
-})
-export class Follow extends Entity<FollowAttributes, FollowParams> {
-    @ForeignKey(() => Creator)
-    @Column
-    followerId!: string;
-
-    @ForeignKey(() => Creator)
-    @Column
-    followingId!: string;
-}
+});

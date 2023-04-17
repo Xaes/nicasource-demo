@@ -1,7 +1,9 @@
-import Entity, { EntityAttributes } from "../../common/entity";
-import {BelongsToMany, Column, DataType, HasMany, IsEmail, Table} from "sequelize-typescript";
-import { Video } from "./video";
-import {Follow} from "./follow";
+import Entity, { DefaultSchema, EntityAttributes } from "../../common/entity";
+import { Follow } from "./follow";
+import DomainException from "../../common/exception";
+import FollowRepositoryFactory from "../../../persistence/factories/repositoryFactory";
+import SequelizeClient from "../../../persistence/database";
+import { DataTypes } from "sequelize";
 
 export interface CreatorAttributes extends EntityAttributes {
     name: string,
@@ -13,35 +15,38 @@ export interface CreatorParams {
     email: string,
 }
 
-@Table({
-    tableName: "creator",
-    freezeTableName: true,
-    timestamps: true
-})
 export class Creator extends Entity<CreatorAttributes, CreatorParams> {
-
-    @Column(DataType.STRING)
     public name!: string;
-
-    @IsEmail
-    @Column(DataType.STRING)
     public email!: string;
 
-    @HasMany(() => Video)
-    public videos!: Video[];
-
-    @BelongsToMany(() => Creator, () => Follow)
-    public followers!: Creator[]
-
-    @BelongsToMany(() => Creator, () => Follow)
-    public following!: Creator[]
-
-    public follow(): void {
-
+    public async follow(followerId: string): Promise<Follow> {
+        const repository = FollowRepositoryFactory.newInstance();
+        return await repository.create({ followerId, followingId: this.id });
     }
 
-    public unfollow(): void {
-
+    public async unfollow(followerId: string): Promise<void> {
+        const repository = FollowRepositoryFactory.newInstance();
+        const follow = await repository.findOne({ where: { followerId, followingId: this.id } });
+        if (!follow) throw new DomainException(`Creator ${followerId} is not following ${this.id}`);
+        else await repository.delete(follow);
     }
 
 }
+
+export const CreatorModel = Creator.init({
+    ...DefaultSchema,
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    }
+}, {
+    sequelize: SequelizeClient,
+    tableName: "creator",
+    freezeTableName: true,
+    timestamps: true
+});

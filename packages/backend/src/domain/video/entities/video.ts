@@ -1,7 +1,8 @@
-import Entity, { EntityAttributes } from "../../common/entity";
-import { BelongsTo, Column, DataType, Default, ForeignKey, IsUrl, Table } from "sequelize-typescript";
+import { DefaultSchema, EntityAttributes } from "../../common/entity";
 import DomainException from "../../common/exception";
-import { Creator } from "./creator";
+import BaseModel from "../../common/entity";
+import SequelizeClient from "../../../persistence/database";
+import { DataTypes, Deferrable } from "sequelize";
 
 export interface VideoAttributes extends EntityAttributes {
     title: string;
@@ -9,6 +10,7 @@ export interface VideoAttributes extends EntityAttributes {
     publishedAt?: Date;
     isPublished: boolean;
     videoUrl: string;
+    creatorId: string;
 }
 
 export interface VideoParams {
@@ -18,36 +20,14 @@ export interface VideoParams {
     creatorId: string;
 }
 
-@Table({
-    tableName: "video",
-    freezeTableName: true,
-    timestamps: true,
-})
-export class Video extends Entity<VideoAttributes, VideoParams> {
+export class Video extends BaseModel<VideoAttributes, VideoParams> {
 
-    @Column(DataType.STRING)
     public title!: string;
-
-    @Column(DataType.STRING)
     public description!: string;
-
-    @Column(DataType.DATE)
     public publishedAt?: Date;
-
-    @Default(false)
-    @Column(DataType.BOOLEAN)
     public isPublished!: boolean;
-
-    @IsUrl
-    @Column(DataType.STRING)
     public videoUrl!: string;
-
-    @ForeignKey(() => Creator)
-    @Column
     public creatorId!: string;
-
-    @BelongsTo(() => Creator)
-    public creator!: Creator;
 
     public publish(): void {
         if (this.isPublished) throw new DomainException(`Video ID ${this.id} can't be updated because it is already published`);
@@ -70,3 +50,42 @@ export class Video extends Entity<VideoAttributes, VideoParams> {
     }
 
 }
+
+export const VideoModel = Video.init({
+    ...DefaultSchema,
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    publishedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    isPublished: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    videoUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isUrl: true
+        }
+    },
+    creatorId: {
+        type: DataTypes.UUIDV4,
+        validate: {
+            isUUID: 4
+        }
+    }
+}, {
+    sequelize: SequelizeClient,
+    tableName: "video",
+    timestamps: true,
+    freezeTableName: true,
+});

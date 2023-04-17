@@ -1,9 +1,9 @@
-import Entity, { EntityAttributes } from "./entity";
-
-export interface IRepository<Params extends object, T extends Entity<EntityAttributes, Params>> {
+export interface IRepository<Model, QueryOptions extends object, Params extends object> {
     exists(id: string): Promise<boolean>;
-    delete(entity: T): Promise<void>;
-    getById(id: string): Promise<T>;
-    save(entity: T): Promise<T>;
-    create(params: Params): Promise<T>;
+    delete(model: Model): Promise<void>;
+    getById(id: string): Promise<Model>;
+    save(model: Model): Promise<Model>;
+    create(params: Params): Promise<Model>;
+    findAll(options: QueryOptions): Promise<Model[]>
+    findOne(options: QueryOptions): Promise<Model | null>
 }

@@ -1,20 +1,29 @@
 import VideoAggregate from "./persistence/repositories/videoRepository";
 import AssetManager from "./domain/video/assetManager";
+import loadAssociations from "./domain/video/entities/associations";
 import CreatorAggregate from "./persistence/repositories/creatorRepository";
 
+loadAssociations();
 const manager = new AssetManager(CreatorAggregate, VideoAggregate);
 
-const savedCreator = await manager.addCreator({
+const creator1 = await manager.addCreator({
     name: "Diego Balmaceda",
     email: "diego@xaes.dev"
+});
+
+const creator2 = await manager.addCreator({
+    name: "Juan Alejandro",
+    email: "juan@xaes.dev"
 });
 
 const savedVideo = await manager.addVideo({
     videoUrl: "https://xaes.dev",
     title: "My first video",
     description: "Some nice vid",
-    creatorId: savedCreator.id
+    creatorId: creator1.id
 });
 
-const publishedVideo = await manager.publishVideo(savedVideo.id);
-await manager.unpublishVideo(publishedVideo.id);
+await manager.publishVideo(savedVideo.id);
+await creator1.follow(creator2.id);
+console.log(JSON.stringify(await manager.findCreatorById(creator1.id)));
+console.log(JSON.stringify(await manager.findCreatorById(creator2.id)));

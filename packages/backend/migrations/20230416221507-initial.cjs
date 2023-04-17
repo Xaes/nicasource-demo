@@ -17,10 +17,6 @@ module.exports = {
                 type: Sequelize.DataTypes.DATE,
                 allowNull: false
             },
-            deletedAt: {
-                type: Sequelize.DataTypes.DATE,
-                allowNull: true
-            },
             email: {
                 type: Sequelize.DataTypes.STRING,
                 allowNull: false,
@@ -45,10 +41,6 @@ module.exports = {
             updatedAt: {
                 type: Sequelize.DataTypes.DATE,
                 allowNull: false
-            },
-            deletedAt: {
-                type: Sequelize.DataTypes.DATE,
-                allowNull: true
             },
             title: {
                 type: Sequelize.DataTypes.STRING,
@@ -84,12 +76,6 @@ module.exports = {
         }, { transaction });
 
         await queryInterface.createTable("follow", {
-            id: {
-                type: Sequelize.DataTypes.UUID,
-                primaryKey: true,
-                allowNull: false,
-                unique: true,
-            },
             followerId: {
                 type: Sequelize.DataTypes.UUID,
                 references: {
@@ -117,10 +103,6 @@ module.exports = {
             updatedAt: {
                 type: Sequelize.DataTypes.DATE,
                 allowNull: false
-            },
-            deletedAt: {
-                type: Sequelize.DataTypes.DATE,
-                allowNull: true
             },
         }, { transaction });
 

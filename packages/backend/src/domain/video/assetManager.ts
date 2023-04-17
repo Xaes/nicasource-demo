@@ -20,10 +20,6 @@ export interface IAssetManager {
 
     // Likes.
     findLikedVideosByCreatorId(creatorId: string): Promise<Video[]>
-
-    // Follows.
-    findFollowingByCreatorId(creatorId: string): Promise<unknown[]>
-    findFollowersByCreatorId(creatorId: string): Promise<unknown[]>
 }
 
 export default class AssetManager implements IAssetManager {
@@ -43,7 +39,9 @@ export default class AssetManager implements IAssetManager {
     async addVideo(params: VideoParams): Promise<Video> {
         if (!(await this.creatorRepository.exists(params.creatorId))) {
             throw new DomainException(`Creator with ID ${params.creatorId} does not exist`);
-        } else return await this.videoRepository.create(params);
+        } else {
+            return await this.videoRepository.create(params);
+        }
     }
 
     async publishVideo(id: string): Promise<Video> {
@@ -62,16 +60,8 @@ export default class AssetManager implements IAssetManager {
         throw new Error("Method not implemented.");
     }
 
-    findCreatorById(id: string): Promise<Creator> {
-        throw new Error("Method not implemented.");
-    }
-
-    findFollowersByCreatorId(creatorId: string): Promise<unknown[]> {
-        throw new Error("Method not implemented.");
-    }
-
-    findFollowingByCreatorId(creatorId: string): Promise<unknown[]> {
-        throw new Error("Method not implemented.");
+    async findCreatorById(id: string): Promise<Creator> {
+        return await this.creatorRepository.getById(id);
     }
 
     findLikedVideosByCreatorId(creatorId: string): Promise<Video[]> {
