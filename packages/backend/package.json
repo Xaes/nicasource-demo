@@ -7,6 +7,10 @@
         "Diego Balmaceda <diego@xaes.dev>"
     ],
     "scripts": {
+        "migrate:up": "npx sequelize-cli db:migrate",
+        "migrate:undo": "npx sequelize-cli db:migrate:undo",
+        "migrate-prod:up": "NODE_ENV=production npx sequelize-cli db:migrate",
+        "migrate-prod:undo": "NODE_ENV=production npx sequelize-cli db:migrate:undo",
         "start": "ts-node src/main.ts",
         "dev": "nodemon src/main.ts",
         "lint": "npx eslint --fix ."
@@ -30,11 +34,15 @@
     },
     "devDependencies": {
         "@types/node": "^18.15.11",
+        "@types/validator": "^13.7.15",
         "@typescript-eslint/eslint-plugin": "^5.58.0",
         "@typescript-eslint/parser": "^5.58.0",
         "dotenv": "^16.0.3",
         "eslint": "^8.38.0",
         "nodemon": "^2.0.22",
+        "reflect-metadata": "^0.1.13",
+        "sequelize-cli": "^6.6.0",
+        "sequelize-typescript": "^2.1.5",
         "ts-node": "^10.9.1",
         "typescript": "^5.0.4"
     },

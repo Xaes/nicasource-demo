@@ -1,5 +1,5 @@
 {
-    "name": "Nicasource",
+    "name": "@nicasource/monorepo",
     "packageManager": "yarn@3.5.0",
     "description": "NicaSource backend.",
     "type": "module",
@@ -7,7 +7,7 @@
         "Diego Balmaceda <diego@xaes.dev>"
     ],
     "scripts": {
-        "backend-dev": "yarn workspace @nicasource/backend dev"
+        "backend-dev": "docker-compose up -d && yarn workspace @nicasource/backend migrate:up && yarn workspace @nicasource/backend dev"
     },
     "workspaces": [
         "./packages/*"
