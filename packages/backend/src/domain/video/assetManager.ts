@@ -1,11 +1,14 @@
-import {Video, VideoParams} from "./entities/video";
-import {IVideoRepository, VideoRepository} from "../../persistence/repositories/videoRepository";
+import { Video, VideoParams } from "./entities/video";
+import { IVideoRepository } from "../../persistence/repositories/videoRepository";
+import { ICreatorRepository } from "../../persistence/repositories/creatorRepository";
+import { Creator, CreatorParams } from "./entities/creator";
+import DomainException from "../common/exception";
 
 export interface IAssetManager {
     // Creators.
-    addCreator(): Promise<unknown>;
-    findCreatorById(id: string): Promise<unknown>;
-    findCreatorByEmail(email: string): Promise<unknown>;
+    addCreator(params: CreatorParams): Promise<Creator>;
+    findCreatorById(id: string): Promise<Creator>;
+    findCreatorByEmail(email: string): Promise<Creator>;
 
     // Videos.
     addVideo(params: VideoParams): Promise<Video>
@@ -25,37 +28,41 @@ export interface IAssetManager {
 
 export default class AssetManager implements IAssetManager {
 
-    private repository: IVideoRepository;
+    private videoRepository: IVideoRepository;
+    private creatorRepository: ICreatorRepository;
 
-    public constructor(repository: IVideoRepository) {
-        this.repository = repository;
+    public constructor(creatorRepository: ICreatorRepository, videoRepository: IVideoRepository) {
+        this.videoRepository = videoRepository;
+        this.creatorRepository = creatorRepository;
     }
 
-    addCreator(): Promise<unknown> {
-        throw new Error("Method not implemented.");
+    async addCreator(params: CreatorParams): Promise<Creator> {
+        return await this.creatorRepository.create(params);
     }
 
     async addVideo(params: VideoParams): Promise<Video> {
-        return await this.repository.create(params);
+        if (!(await this.creatorRepository.exists(params.creatorId))) {
+            throw new DomainException(`Creator with ID ${params.creatorId} does not exist`);
+        } else return await this.videoRepository.create(params);
     }
 
     async publishVideo(id: string): Promise<Video> {
-        const video = await this.repository.getById(id);
+        const video = await this.videoRepository.getById(id);
         video.publish();
-        return await this.repository.save(video);
+        return await this.videoRepository.save(video);
     }
 
     async unpublishVideo(id: string): Promise<Video> {
-        const video = await this.repository.getById(id);
+        const video = await this.videoRepository.getById(id);
         video.unpublish();
-        return await this.repository.save(video);
+        return await this.videoRepository.save(video);
     }
 
-    findCreatorByEmail(email: string): Promise<unknown> {
+    findCreatorByEmail(email: string): Promise<Creator> {
         throw new Error("Method not implemented.");
     }
 
-    findCreatorById(id: string): Promise<unknown> {
+    findCreatorById(id: string): Promise<Creator> {
         throw new Error("Method not implemented.");
     }
 

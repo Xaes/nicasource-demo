@@ -17,7 +17,7 @@ export interface EntityAttributes {
     deletedAt?: Date;
 }
 
-export default class Entity<Attributes extends EntityAttributes, Params extends {} = {}> extends Model<Attributes, Params> {
+export default class Entity<Attributes extends EntityAttributes, Params extends object = object> extends Model<Attributes, Params> {
     @IsUUID(4)
     @PrimaryKey
     @Unique

@@ -2,6 +2,35 @@ module.exports = {
     up: (queryInterface, Sequelize) => queryInterface.sequelize.transaction(
     async (transaction) => {
         // Creating Tables.
+        await queryInterface.createTable("creator", {
+            id: {
+                type: Sequelize.DataTypes.UUID,
+                primaryKey: true,
+                allowNull: false,
+                unique: true,
+            },
+            createdAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            updatedAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            deletedAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: true
+            },
+            email: {
+                type: Sequelize.DataTypes.STRING,
+                allowNull: false,
+            },
+            name: {
+                type: Sequelize.DataTypes.STRING,
+                allowNull: false,
+            }
+        });
+
         await queryInterface.createTable("video", {
             id: {
                 type: Sequelize.DataTypes.UUID,
@@ -41,11 +70,22 @@ module.exports = {
             videoUrl: {
                 type: Sequelize.DataTypes.STRING,
                 allowNull: false
+            },
+            creatorId: {
+                type: Sequelize.DataTypes.UUID,
+                references: {
+                    model: {
+                        tableName: "creator"
+                    },
+                    key: "id"
+                },
+                allowNull: false
             }
         });
     }),
     down: (queryInterface) => queryInterface.sequelize.transaction(
     async (transaction) => {
         await queryInterface.dropTable("video");
+        await queryInterface.dropTable("creator");
     })
 };
