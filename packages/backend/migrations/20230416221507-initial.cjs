@@ -126,7 +126,6 @@ module.exports = {
 
         await queryInterface.addIndex("follow", {
             fields: ["followerId", "followingId"],
-            type: "UNIQUE",
             unique: true,
             transaction
         });
