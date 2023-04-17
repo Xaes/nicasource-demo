@@ -1,8 +1,6 @@
-import { DefaultSchema, EntityAttributes } from "../../common/entity";
+import { EntityAttributes } from "../../common/entity";
 import DomainException from "../../common/exception";
 import BaseModel from "../../common/entity";
-import SequelizeClient from "../../../persistence/database";
-import { DataTypes } from "sequelize";
 
 export interface VideoAttributes extends EntityAttributes {
     title: string;
@@ -50,42 +48,3 @@ export class Video extends BaseModel<VideoAttributes, VideoParams> {
     }
 
 }
-
-export const VideoModel = Video.init({
-    ...DefaultSchema,
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    publishedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    isPublished: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-    },
-    videoUrl: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            isUrl: true
-        }
-    },
-    creatorId: {
-        type: DataTypes.UUIDV4,
-        validate: {
-            isUUID: 4
-        }
-    }
-}, {
-    sequelize: SequelizeClient,
-    tableName: "video",
-    timestamps: true,
-    freezeTableName: true,
-});

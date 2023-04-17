@@ -1,9 +1,7 @@
-import Entity, { DefaultSchema, EntityAttributes } from "../../common/entity";
+import Entity, { EntityAttributes } from "../../common/entity";
 import { Follow } from "./follow";
 import DomainException from "../../common/exception";
 import FollowRepositoryFactory from "../../../persistence/factories/repositoryFactory";
-import SequelizeClient from "../../../persistence/database";
-import { DataTypes } from "sequelize";
 
 export interface CreatorAttributes extends EntityAttributes {
     name: string,
@@ -33,21 +31,3 @@ export class Creator extends Entity<CreatorAttributes, CreatorParams> {
         else await repository.delete(follow);
     }
 }
-
-export const CreatorModel = Creator.init({
-    ...DefaultSchema,
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-    }
-}, {
-    sequelize: SequelizeClient,
-    tableName: "creator",
-    freezeTableName: true,
-    timestamps: true
-});

@@ -1,5 +1,6 @@
 import { IRepository } from "../../domain/common/repository";
-import { Follow, FollowModel, FollowParams } from "../../domain/video/entities/follow";
+import { Follow, FollowParams } from "../../domain/video/entities/follow";
+import { FollowModel } from "../models";
 import { Attributes, FindOptions } from "sequelize";
 
 export type IFollowRepository = IRepository<Follow, FindOptions<Attributes<Follow>>, FollowParams>

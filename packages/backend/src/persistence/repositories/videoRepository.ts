@@ -1,5 +1,6 @@
 import { IRepository } from "../../domain/common/repository";
-import { Video, VideoModel, VideoParams } from "../../domain/video/entities/video";
+import { Video, VideoParams } from "../../domain/video/entities/video";
+import { VideoModel } from "../models";
 import DomainException from "../../domain/common/exception";
 import { Attributes, FindOptions } from "sequelize";
 

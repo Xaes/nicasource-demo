@@ -1,9 +1,7 @@
 import VideoAggregate from "./persistence/repositories/videoRepository";
 import AssetManager from "./domain/video/assetManager";
-import loadAssociations from "./domain/video/entities/associations";
 import CreatorAggregate from "./persistence/repositories/creatorRepository";
 
-loadAssociations();
 const manager = new AssetManager(CreatorAggregate, VideoAggregate);
 
 const creator1 = await manager.addCreator({

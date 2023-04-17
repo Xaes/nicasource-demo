@@ -48,7 +48,6 @@ namespace domain.video {
     createdAt
   }
 
-
   class Creator <<entity>> {
     id
     name

@@ -1,5 +1,6 @@
 import { IRepository } from "../../domain/common/repository";
-import { Creator, CreatorModel, CreatorParams } from "../../domain/video/entities/creator";
+import { Creator, CreatorParams } from "../../domain/video/entities/creator";
+import { CreatorModel } from "../models";
 import DomainException from "../../domain/common/exception";
 import { Attributes, FindOptions } from "sequelize";
 
