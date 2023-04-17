@@ -29,7 +29,7 @@ module.exports = {
                 type: Sequelize.DataTypes.STRING,
                 allowNull: false,
             }
-        });
+        },{ transaction });
 
         await queryInterface.createTable("video", {
             id: {
@@ -81,11 +81,11 @@ module.exports = {
                 },
                 allowNull: false
             }
-        });
+        }, { transaction });
     }),
     down: (queryInterface) => queryInterface.sequelize.transaction(
     async (transaction) => {
-        await queryInterface.dropTable("video");
-        await queryInterface.dropTable("creator");
+        await queryInterface.dropTable("video", { transaction });
+        await queryInterface.dropTable("creator", { transaction });
     })
 };
