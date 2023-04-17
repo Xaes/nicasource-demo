@@ -2,7 +2,7 @@ import { DefaultSchema, EntityAttributes } from "../../common/entity";
 import DomainException from "../../common/exception";
 import BaseModel from "../../common/entity";
 import SequelizeClient from "../../../persistence/database";
-import { DataTypes, Deferrable } from "sequelize";
+import { DataTypes } from "sequelize";
 
 export interface VideoAttributes extends EntityAttributes {
     title: string;
