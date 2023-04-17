@@ -17,7 +17,7 @@ export interface VideoParams {
 }
 
 @Table({
-    tableName: "user",
+    tableName: "video",
     freezeTableName: true,
     timestamps: true,
 })

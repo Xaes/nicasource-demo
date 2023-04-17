@@ -2,7 +2,7 @@ module.exports = {
     up: (queryInterface, Sequelize) => queryInterface.sequelize.transaction(
     async (transaction) => {
         // Creating Tables.
-        await queryInterface.createTable("user", {
+        await queryInterface.createTable("video", {
             id: {
                 type: Sequelize.DataTypes.UUID,
                 primaryKey: true,
@@ -46,6 +46,6 @@ module.exports = {
     }),
     down: (queryInterface) => queryInterface.sequelize.transaction(
     async (transaction) => {
-        await queryInterface.dropTable("user");
+        await queryInterface.dropTable("video");
     })
 };
