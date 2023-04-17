@@ -28,7 +28,7 @@ export class CreatorRepository implements ICreatorRepository {
             { include: [
                 { model: CreatorModel, as: "followers" },
                 { model: CreatorModel, as: "following" }
-            ] }
+            ]}
         );
         if (!entity) throw new DomainException(`Creator with ID ${id} was not found.`);
         else return entity;

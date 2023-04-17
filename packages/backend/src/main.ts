@@ -25,5 +25,8 @@ const savedVideo = await manager.addVideo({
 
 await manager.publishVideo(savedVideo.id);
 await creator1.follow(creator2.id);
-console.log(JSON.stringify(await manager.findCreatorById(creator1.id)));
-console.log(JSON.stringify(await manager.findCreatorById(creator2.id)));
+console.log(JSON.stringify(await manager.findCreatorById(creator1.id), null, 4));
+console.log(JSON.stringify(await manager.findCreatorById(creator2.id), null, 4));
+await creator1.unfollow(creator2.id);
+console.log(JSON.stringify(await manager.findCreatorById(creator1.id), null, 4));
+console.log(JSON.stringify(await manager.findCreatorById(creator2.id), null, 4));

@@ -19,15 +19,15 @@ export class Creator extends Entity<CreatorAttributes, CreatorParams> {
     public name!: string;
     public email!: string;
 
-    public async follow(followerId: string): Promise<Follow> {
+    public async follow(followingId: string): Promise<Follow> {
         const repository = FollowRepositoryFactory.newInstance();
-        return await repository.create({ followerId, followingId: this.id });
+        return await repository.create({ followerId: this.id, followingId: followingId });
     }
 
-    public async unfollow(followerId: string): Promise<void> {
+    public async unfollow(followingId: string): Promise<void> {
         const repository = FollowRepositoryFactory.newInstance();
-        const follow = await repository.findOne({ where: { followerId, followingId: this.id } });
-        if (!follow) throw new DomainException(`Creator ${followerId} is not following ${this.id}`);
+        const follow = await repository.findOne({ where: { followerId: this.id, followingId: followingId } });
+        if (!follow) throw new DomainException(`Creator ${this.id} is not following ${followingId}`);
         else await repository.delete(follow);
     }
 
