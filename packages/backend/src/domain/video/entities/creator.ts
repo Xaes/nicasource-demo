@@ -1,6 +1,7 @@
 import Entity, { EntityAttributes } from "../../common/entity";
-import { Column, DataType, HasMany, IsEmail, Table } from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, HasMany, IsEmail, Table} from "sequelize-typescript";
 import { Video } from "./video";
+import {Follow} from "./follow";
 
 export interface CreatorAttributes extends EntityAttributes {
     name: string,
@@ -28,6 +29,12 @@ export class Creator extends Entity<CreatorAttributes, CreatorParams> {
 
     @HasMany(() => Video)
     public videos!: Video[];
+
+    @BelongsToMany(() => Creator, () => Follow)
+    public followers!: Creator[]
+
+    @BelongsToMany(() => Creator, () => Follow)
+    public following!: Creator[]
 
     public follow(): void {
 

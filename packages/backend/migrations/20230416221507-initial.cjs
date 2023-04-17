@@ -82,10 +82,60 @@ module.exports = {
                 allowNull: false
             }
         }, { transaction });
+
+        await queryInterface.createTable("follow", {
+            id: {
+                type: Sequelize.DataTypes.UUID,
+                primaryKey: true,
+                allowNull: false,
+                unique: true,
+            },
+            followerId: {
+                type: Sequelize.DataTypes.UUID,
+                references: {
+                    model: {
+                        tableName: "creator"
+                    },
+                    key: "id"
+                },
+                allowNull: false
+            },
+            followingId: {
+                type: Sequelize.DataTypes.UUID,
+                references: {
+                    model: {
+                        tableName: "creator"
+                    },
+                    key: "id"
+                },
+                allowNull: false
+            },
+            createdAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            updatedAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            deletedAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: true
+            },
+        }, { transaction });
+
+        await queryInterface.addIndex("follow", {
+            fields: ["followerId", "followingId"],
+            type: "UNIQUE",
+            unique: true,
+            transaction
+        });
+
     }),
     down: (queryInterface) => queryInterface.sequelize.transaction(
     async (transaction) => {
         await queryInterface.dropTable("video", { transaction });
+        await queryInterface.dropTable("follow", { transaction });
         await queryInterface.dropTable("creator", { transaction });
     })
 };
