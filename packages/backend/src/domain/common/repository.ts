@@ -1,9 +1,9 @@
-import Entity, {EntityAttributes, EntityParams} from "./entity";
+import Entity, {EntityAttributes} from "./entity";
 
-export interface IRepository<T extends Entity<EntityAttributes, EntityParams>> {
+export interface IRepository<Params extends {}, T extends Entity<EntityAttributes, Params>> {
     exists(entity: T): Promise<boolean>;
     delete(entity: T): Promise<void>;
     getById(id: string): Promise<T>;
-    update(entity: T): Promise<T>;
-    create(params: EntityParams): Promise<T>;
+    save(entity: T): Promise<T>;
+    create(params: Params): Promise<T>;
 }

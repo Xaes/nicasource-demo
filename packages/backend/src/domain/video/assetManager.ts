@@ -1,14 +1,16 @@
-import {Video} from "./entities/video";
-import { VideoRepository } from "../../persistence/repositories/videoRepository";
+import {Video, VideoParams} from "./entities/video";
+import {IVideoRepository, VideoRepository} from "../../persistence/repositories/videoRepository";
 
 export interface IAssetManager {
     // Creators.
     addCreator(): Promise<unknown>;
-    findCreatorById(): Promise<unknown>;
-    findCreatorByEmail(): Promise<unknown>;
+    findCreatorById(id: string): Promise<unknown>;
+    findCreatorByEmail(email: string): Promise<unknown>;
 
     // Videos.
-    addVideo(): Promise<Video>
+    addVideo(params: VideoParams): Promise<Video>
+    publishVideo(id: string): Promise<Video>
+    unpublishVideo(id: string): Promise<Video>
     findVideoById(id: string): Promise<Video>
     findPublishedVideos(): Promise<Video[]>
     findVideosByCreatorId(creatorId: string): Promise<Video[]>
@@ -21,11 +23,11 @@ export interface IAssetManager {
     findFollowersByCreatorId(creatorId: string): Promise<unknown[]>
 }
 
-class AssetManager implements IAssetManager {
+export default class AssetManager implements IAssetManager {
 
-    private repository: VideoRepository;
+    private repository: IVideoRepository;
 
-    public constructor(repository: VideoRepository) {
+    public constructor(repository: IVideoRepository) {
         this.repository = repository;
     }
 
@@ -33,15 +35,27 @@ class AssetManager implements IAssetManager {
         throw new Error("Method not implemented.");
     }
 
-    addVideo(): Promise<Video> {
+    async addVideo(params: VideoParams): Promise<Video> {
+        return await this.repository.create(params);
+    }
+
+    async publishVideo(id: string): Promise<Video> {
+        const video = await this.repository.getById(id);
+        video.publish();
+        return await this.repository.save(video);
+    }
+
+    async unpublishVideo(id: string): Promise<Video> {
+        const video = await this.repository.getById(id);
+        video.unpublish();
+        return await this.repository.save(video);
+    }
+
+    findCreatorByEmail(email: string): Promise<unknown> {
         throw new Error("Method not implemented.");
     }
 
-    findCreatorByEmail(): Promise<unknown> {
-        throw new Error("Method not implemented.");
-    }
-
-    findCreatorById(): Promise<unknown> {
+    findCreatorById(id: string): Promise<unknown> {
         throw new Error("Method not implemented.");
     }
 
@@ -68,5 +82,4 @@ class AssetManager implements IAssetManager {
     findVideosByCreatorId(creatorId: string): Promise<Video[]> {
         throw new Error("Method not implemented.");
     }
-
 }

@@ -1,4 +1,4 @@
-import Entity, { EntityAttributes, EntityParams } from "../../common/entity";
+import Entity, { EntityAttributes } from "../../common/entity";
 import { Column, DataType, Default, IsUrl, Table } from "sequelize-typescript";
 import DomainException from "../../common/exception";
 
@@ -10,7 +10,7 @@ export interface VideoAttributes extends EntityAttributes {
     videoUrl: string;
 }
 
-export interface VideoParams extends EntityParams {
+export interface VideoParams {
     title: string;
     description: string;
     videoUrl: string;

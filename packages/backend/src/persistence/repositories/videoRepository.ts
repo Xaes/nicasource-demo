@@ -3,7 +3,7 @@ import {Video, VideoParams} from "../../domain/video/entities/video";
 import DomainException from "../../domain/common/exception";
 import SequelizeClient from "../database";
 
-export interface IVideoRepository extends IRepository<Video> {
+export interface IVideoRepository extends IRepository<VideoParams, Video> {
 
 }
 
@@ -33,12 +33,8 @@ export class VideoRepository implements IVideoRepository {
         else return entity;
     }
 
-    async update(video: Video): Promise<Video> {
-        const [_, updatedVideos] = await this.sequelizeRepository.update(video, {
-            where: { id: video.id },
-            returning: true
-        });
-        return updatedVideos[0];
+    async save(video: Video): Promise<Video> {
+        return await video.save();
     }
 }
 
