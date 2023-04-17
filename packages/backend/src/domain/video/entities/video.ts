@@ -1,5 +1,6 @@
 import Entity, { EntityAttributes, EntityParams } from "../../common/entity";
 import { Column, DataType, Default, IsUrl, Table } from "sequelize-typescript";
+import DomainException from "../../common/exception";
 
 export interface VideoAttributes extends EntityAttributes {
     title: string;
@@ -39,16 +40,20 @@ export class Video extends Entity<VideoAttributes, VideoParams> {
     @Column(DataType.STRING)
     public videoUrl!: string;
 
-    public static newInstance(params: VideoParams): Video {
-        return new Video(params);
-    }
-
     public publish(): void {
-        throw new Error("Method not implemented");
+        if (this.isPublished) throw new DomainException(`Video ID ${this.id} can't be updated because it is already published`);
+        else {
+            this.isPublished = true;
+            this.publishedAt = new Date();
+        }
     }
 
-    public unpublished(): void {
-        throw new Error("Method not implemented");
+    public unpublish(): void {
+        if (!this.isPublished) throw new DomainException(`Video ID ${this.id} can't be updated because it is already unpublished`);
+        else {
+            this.isPublished = false;
+            this.publishedAt = undefined;
+        }
     }
 
     public like(): void {
