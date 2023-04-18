@@ -11,11 +11,18 @@ export const CreatorModel = Creator.init({
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            notNull: { msg: "Creator's name can't be null" }
+        }
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+            notNull: { msg: "Creator's email can't be null" },
+            isEmail: { msg: "Provided email is invalid" }
+        }
     }
 }, {
     sequelize: SequelizeClient,
@@ -47,13 +54,16 @@ export const VideoModel = Video.init({
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            isUrl: true
+            isUrl: { msg: "Provided Video URL is invalid" },
+            notNull: { msg: "Video URL can't be null" }
         }
     },
     creatorId: {
         type: DataTypes.UUIDV4,
+        allowNull: false,
         validate: {
-            isUUID: 4
+            isUUID: { args: 4, msg: "Provided CreatorID is not a valid UUID" },
+            notNull: { msg: "Creator ID can't be null" }
         }
     }
 }, {

@@ -824,6 +824,7 @@ __metadata:
     dotenv: ^16.0.3
     eslint: ^8.38.0
     express: ^4.18.2
+    express-async-handler: ^1.2.0
     helmet: ^6.1.5
     jest: ^29.5.0
     nodemon: ^2.0.22
@@ -2523,6 +2524,13 @@ __metadata:
     jest-message-util: ^29.5.0
     jest-util: ^29.5.0
   checksum: 58f70b38693df6e5c6892db1bcd050f0e518d6f785175dc53917d4fa6a7359a048e5690e19ddcb96b65c4493881dd89a3dabdab1a84dfa55c10cdbdabf37b2d7
+  languageName: node
+  linkType: hard
+
+"express-async-handler@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "express-async-handler@npm:1.2.0"
+  checksum: ab9ebba8b8366954cb06ab87cf91fc974428993a97940c499114134ce33144f5d1ffad380e60a53a1569c3cd9501cb209e1fb57b1845a4fc8ff449937598f2f1
   languageName: node
   linkType: hard
 
