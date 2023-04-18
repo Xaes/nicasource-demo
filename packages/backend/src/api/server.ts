@@ -29,10 +29,18 @@ server.use("/api/v1", V1Router);
 // Eslint complains about NextFunction not being used, but Express needs it, so it knows it's an error handler.
 // eslint-disable-next-line
 server.use((error: Error, req: TypedRequest, res: TypedResponse<APIErrorResponse>, _: NextFunction) => {
-    console.log(error);
-    const errorCode = error.name === "SequelizeValidationError" ? 422 : 500;
-    error.message = (error as ValidationError).errors ?
-        (error as ValidationError).errors.map(e => e.message).join(", ") : error.message;
+    console.error(error);
+    let errorCode = 500;
+
+    switch(error.name) {
+    case "SequelizeValidationError":
+    case "SequelizeUniqueConstraintError":
+        errorCode = 422;
+        error.message = (error as ValidationError).errors ?
+            (error as ValidationError).errors.map(e => e.message).join(", ") : error.message;
+        break;
+    }
+
     sendError(res, error, errorCode);
 });
 
