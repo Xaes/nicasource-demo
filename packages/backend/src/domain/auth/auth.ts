@@ -1,10 +1,14 @@
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import AuthAggregate, { ICredentialRepository } from "../../persistence/repositories/credentialRepository";
 import { Credential, CredentialParams, CredentialType } from "./entities/credential";
 import { SessionToken } from "./entities/sessiontoken";
-import { User } from "./entities/user";
 import DomainException from "../common/exception";
 import Config from "../../../config/config";
+import { User } from "./entities/user";
+
+export interface SessionPayload extends jwt.JwtPayload {
+    userId: string
+}
 
 export class Auth {
     private readonly privateKey: string;
@@ -37,7 +41,7 @@ export class Auth {
     }
     */
 
-    private generateAccessToken(payload: Record<string, string>): Promise<string> {
+    private generateAccessToken(payload: SessionPayload): Promise<string> {
         return new Promise((resolve, reject) => {
             jwt.sign(payload, this.privateKey, { algorithm: "HS256", expiresIn: "1 day" }, (err, token) => {
                 if (err) reject(err);

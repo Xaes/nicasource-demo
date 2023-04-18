@@ -45,7 +45,14 @@ export class CreatorRepository implements ICreatorRepository {
     }
 
     async findOne(options: FindOptions<Attributes<Creator>>): Promise<Creator | null> {
-        return await this.model.findOne({ ...options, include: { model: CreatorModel } });
+        return await this.model.findOne({
+            ...options,
+            include: [
+                { model: CreatorModel, as: "followers" },
+                { model: CreatorModel, as: "following" },
+                { model: VideoModel, as: "likedVideos" }
+            ]
+        });
     }
 }
 

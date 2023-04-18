@@ -1,6 +1,8 @@
 import { Send } from "express-serve-static-core";
 import { Response } from "express";
 import { Error } from "sequelize";
+import { SessionPayload } from "../domain/auth/auth";
+import { IncomingHttpHeaders } from "http";
 
 
 export interface APIOkResponse<T> {
@@ -16,7 +18,9 @@ export interface APIErrorResponse {
 
 export interface TypedRequest<B = object, P = object> extends Express.Request {
     body: B,
-    params: P
+    params: P,
+    headers: IncomingHttpHeaders,
+    session?: SessionPayload
 }
 
 export interface TypedResponse<B> extends Response {

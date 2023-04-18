@@ -13,12 +13,11 @@ package common {
 
 package api {
     [server]
-    [routes]
-    [auth]
     package resources {
         [router]
         [model]
         [handler]
+        [middlewares]
     }
 }
 

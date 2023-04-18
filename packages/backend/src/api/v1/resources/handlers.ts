@@ -1,20 +1,27 @@
 import { APIOkResponse, sendOkResponse, TypedRequest, TypedResponse } from "../../types";
 import { Creator } from "../../../domain/video/entities/creator";
 import AssetManager from "../../../domain/video/assetManager";
-import { Video, VideoParams } from "../../../domain/video/entities/video";
-import { AddCreatorParams } from "./model";
+import { Video } from "../../../domain/video/entities/video";
+import { AddCreatorParams, CreateVideoParams, LoginParams } from "./model";
 import Auth from "../../../domain/auth/auth";
+import { SessionToken } from "../../../domain/auth/entities/sessiontoken";
 
 export const GetCreatorByIdHandler = async (request: TypedRequest<object, { creatorId: string }>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
     const creator = await AssetManager.findCreatorById(request.params.creatorId);
     sendOkResponse<Creator>(response, creator);
 };
 
-export const PostCreatorHandler = async (request: TypedRequest<AddCreatorParams>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
+export const PostUserCreateHandler = async (request: TypedRequest<AddCreatorParams>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
     // TODO: Add transactional control. If addCredential fails, creator will still be created.
     const newCreator = await AssetManager.addCreator(request.body.creator);
     await Auth.addCredential({ ...request.body.credential, userId: newCreator.id });
     sendOkResponse<Creator>(response, newCreator);
+};
+
+export const PostUserLoginHandler = async (request: TypedRequest<LoginParams>, response: TypedResponse<APIOkResponse<SessionToken>>): Promise<void> => {
+    const user = await AssetManager.findCreatorByEmail(request.body.email);
+    const accessToken = await Auth.authenticate(user, request.body.credentialType, request.body.challenge);
+    sendOkResponse<SessionToken>(response, accessToken);
 };
 
 export const GetVideosHandler = async (request: TypedRequest, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
@@ -32,19 +39,26 @@ export const GetVideosByCreatorId = async(request: TypedRequest<object, { creato
     sendOkResponse<Video>(response, videos);
 };
 
-export const PostVideoHandler = async (request: TypedRequest<VideoParams>, response: TypedResponse<APIOkResponse<Video>>): Promise<void>=> {
-    const newVideo = await AssetManager.addVideo(request.body);
-    sendOkResponse<Video>(response, newVideo);
+export const PostVideoHandler = async (request: TypedRequest<CreateVideoParams>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+    if (request.session) {
+        const newVideo = await AssetManager.addVideo({
+            ...request.body,
+            creatorId: request.session.userId
+        });
+        sendOkResponse<Video>(response, newVideo);
+    }
 };
 
-export const PublishVideoHandler = async (request: TypedRequest<object, { creatorId: string, videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
-    // TODO: Check from JWT Context if passed ID via creatorId is equal to JWT ID.
-    const publishedVideo = await AssetManager.publishVideo(request.params.creatorId, request.params.videoId);
-    sendOkResponse<Video>(response, publishedVideo);
+export const PublishVideoHandler = async (request: TypedRequest<object, { videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+    if (request.session) {
+        const publishedVideo = await AssetManager.publishVideo(request.session.userId, request.params.videoId);
+        sendOkResponse<Video>(response, publishedVideo);
+    }
 };
 
-export const UnpublishVideoHandler = async (request: TypedRequest<object, { creatorId: string, videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
-    // TODO: Check from JWT Context if passed ID via creatorId is equal to JWT ID.
-    const publishedVideo = await AssetManager.unpublishVideo(request.params.creatorId, request.params.videoId);
-    sendOkResponse<Video>(response, publishedVideo);
+export const UnpublishVideoHandler = async (request: TypedRequest<object, { videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+    if (request.session) {
+        const publishedVideo = await AssetManager.unpublishVideo(request.session.userId, request.params.videoId);
+        sendOkResponse<Video>(response, publishedVideo);
+    }
 };

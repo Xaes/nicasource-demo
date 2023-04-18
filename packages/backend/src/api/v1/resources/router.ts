@@ -1,28 +1,33 @@
 import { Router } from "express";
 import {
-    PostCreatorHandler,
+    PostUserCreateHandler,
     GetCreatorByIdHandler,
     GetVideosHandler,
     GetVideoByIdHandler,
     PostVideoHandler,
     PublishVideoHandler,
     UnpublishVideoHandler,
-    GetVideosByCreatorId
+    GetVideosByCreatorId,
+    PostUserLoginHandler
 } from "./handlers";
 import asyncHandler from "express-async-handler";
+import { authenticateJWT } from "./middlewares";
 
 const MainRouter = Router();
 
+// User Routes.
+MainRouter.post("/user", asyncHandler(PostUserCreateHandler));
+MainRouter.post("/user/login", asyncHandler(PostUserLoginHandler));
+
 // Creator Routes.
-MainRouter.post("/creators", asyncHandler(PostCreatorHandler));
 MainRouter.get("/creators/:creatorId", asyncHandler(GetCreatorByIdHandler));
 MainRouter.get("/creators/:creatorId/videos", asyncHandler(GetVideosByCreatorId));
-MainRouter.patch("/creators/:creatorId/videos/:videoId/publish", asyncHandler(PublishVideoHandler));
-MainRouter.patch("/creators/:creatorId/videos/:videoId/unpublish", asyncHandler(UnpublishVideoHandler));
 
 // Videos Routes.
 MainRouter.get("/videos", asyncHandler(GetVideosHandler));
+MainRouter.post("/videos", authenticateJWT, asyncHandler(PostVideoHandler));
 MainRouter.get("/videos/:videoId", asyncHandler(GetVideoByIdHandler));
-MainRouter.post("/videos", asyncHandler(PostVideoHandler));
+MainRouter.patch("/videos/:videoId/publish", authenticateJWT, asyncHandler(PublishVideoHandler));
+MainRouter.patch("/videos/:videoId/unpublish", authenticateJWT, asyncHandler(UnpublishVideoHandler));
 
 export default MainRouter;

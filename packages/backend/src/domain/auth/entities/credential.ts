@@ -27,7 +27,6 @@ export class Credential extends Entity<CredentialAttributes, CredentialParams> {
     private static readonly SALT_ROUNDS = 10;
 
     static async hashPassword(password: string): Promise<string> {
-        console.log(password);
         return await bcrypt.hash(password, Credential.SALT_ROUNDS);
     }
 
