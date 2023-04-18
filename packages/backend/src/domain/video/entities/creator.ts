@@ -1,7 +1,7 @@
 import Entity, { EntityAttributes } from "../../common/entity";
 import { Follow } from "./follow";
 import DomainException from "../../common/exception";
-import FollowRepositoryFactory from "../../../persistence/factories/repositoryFactory";
+import { FollowRepositoryFactory } from "../../../persistence/factories/repositoryFactory";
 
 export interface CreatorAttributes extends EntityAttributes {
     name: string,

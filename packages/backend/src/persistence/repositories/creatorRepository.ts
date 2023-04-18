@@ -1,6 +1,6 @@
 import { IRepository } from "../../domain/common/repository";
 import { Creator, CreatorParams } from "../../domain/video/entities/creator";
-import { CreatorModel } from "../models";
+import { CreatorModel, VideoModel } from "../models";
 import DomainException from "../../domain/common/exception";
 import { Attributes, FindOptions } from "sequelize";
 
@@ -25,12 +25,13 @@ export class CreatorRepository implements ICreatorRepository {
     }
 
     async getById(id: string): Promise<Creator> {
-        const entity = await this.model.findByPk(id,
-            { include: [
+        const entity = await this.model.findByPk(id, {
+            include: [
                 { model: CreatorModel, as: "followers" },
-                { model: CreatorModel, as: "following" }
-            ] }
-        );
+                { model: CreatorModel, as: "following" },
+                { model: VideoModel, as: "likedVideos" }
+            ]
+        });
         if (!entity) throw new DomainException(`Creator with ID ${id} was not found.`);
         else return entity;
     }

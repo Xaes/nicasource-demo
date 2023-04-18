@@ -1,6 +1,8 @@
 import { EntityAttributes } from "../../common/entity";
 import DomainException from "../../common/exception";
 import BaseModel from "../../common/entity";
+import { LikeRepositoryFactory } from "../../../persistence/factories/repositoryFactory";
+import { Like } from "./like";
 
 export interface VideoAttributes extends EntityAttributes {
     title: string;
@@ -43,8 +45,16 @@ export class Video extends BaseModel<VideoAttributes, VideoParams> {
         }
     }
 
-    public like(): void {
-        throw new Error("Method not implemented");
+    public async like(creatorId: string): Promise<Like> {
+        const repository = LikeRepositoryFactory.newInstance();
+        return await repository.create({ videoId: this.id, creatorId });
+    }
+
+    public async unlike(creatorId: string): Promise<void> {
+        const repository = LikeRepositoryFactory.newInstance();
+        const like = await repository.findOne({ where: { creatorId, videoId: this.id } });
+        if (!like) throw new DomainException(`Video ${this.id} is not liked by Creator ${creatorId}`);
+        else await repository.delete(like);
     }
 
 }

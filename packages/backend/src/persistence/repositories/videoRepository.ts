@@ -1,6 +1,6 @@
 import { IRepository } from "../../domain/common/repository";
 import { Video, VideoParams } from "../../domain/video/entities/video";
-import { VideoModel } from "../models";
+import { CreatorModel, VideoModel } from "../models";
 import DomainException from "../../domain/common/exception";
 import { Attributes, FindOptions } from "sequelize";
 
@@ -19,7 +19,9 @@ export class VideoRepository implements IVideoRepository {
     }
 
     async getById(id: string): Promise<Video> {
-        const entity = await this.model.findByPk(id);
+        const entity = await this.model.findByPk(id, {
+            include: { model: CreatorModel, as: "likeUserIds" }
+        });
         if (!entity) throw new DomainException(`Video with ID ${id} was not found.`);
         else return entity;
     }

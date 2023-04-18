@@ -72,8 +72,8 @@ export default class AssetManager implements IAssetManager {
         throw new Error("Method not implemented.");
     }
 
-    findVideoById(id: string): Promise<Video> {
-        throw new Error("Method not implemented.");
+    async findVideoById(id: string): Promise<Video> {
+        return await this.videoRepository.getById(id);
     }
 
     findVideosByCreatorId(creatorId: string): Promise<Video[]> {

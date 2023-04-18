@@ -4,6 +4,7 @@ import { Follow } from "../domain/video/entities/follow";
 import { DataTypes } from "sequelize";
 import SequelizeClient from "./database";
 import { DefaultSchema } from "../domain/common/entity";
+import { Like } from "../domain/video/entities/like";
 
 export const CreatorModel = Creator.init({
     ...DefaultSchema,
@@ -87,6 +88,31 @@ export const FollowModel = Follow.init({
     ]
 });
 
+export const LikeModel = Like.init({
+    videoId: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        validate: {
+            isUUID: 4
+        }
+    },
+    creatorId: {
+        type: DataTypes.UUIDV4,
+        primaryKey: true,
+        validate: {
+            isUUID: 4
+        }
+    }
+}, {
+    sequelize: SequelizeClient,
+    tableName: "like",
+    freezeTableName: true,
+    timestamps: true,
+    indexes: [
+        { fields: ["videoId", "creatorId"], unique: true }
+    ]
+});
+
 
 // Associations:
 // Video - Creator: One to Many.
@@ -98,3 +124,7 @@ CreatorModel.belongsToMany(CreatorModel, { through: "follow", foreignKey: "follo
 CreatorModel.belongsToMany(CreatorModel, { through: "follow", foreignKey: "followingId", as: "following" });
 FollowModel.belongsTo(CreatorModel, { as: "follower" });
 FollowModel.belongsTo(CreatorModel, { as: "following" });
+
+// Creator / Video - Like: Many to Many.
+CreatorModel.belongsToMany(VideoModel, { through: "like", foreignKey: "creatorId", as: "likedVideos" });
+VideoModel.belongsToMany(CreatorModel, { through: "like", foreignKey: "videoId", as: "likeUserIds" });
