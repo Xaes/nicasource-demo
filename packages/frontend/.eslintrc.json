@@ -1,0 +1,41 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+        "consistent-return": 2,
+        "indent": [1, 4],
+        "no-else-return": 1,
+        "semi": [1, "always"],
+        "space-unary-ops": 2,
+        "no-control-regex": 0,
+        "object-curly-spacing": ["error", "always"],
+        "quotes": ["error", "double"],
+        "@typescript-eslint/no-misused-promises": [ "error", { "checksVoidReturn": false } ],
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-uses-react": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "tsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "tsconfigRootDir": ".",
+        "project": [
+            "./tsconfig.json"
+        ]
+    },
+    "ignorePatterns": ["dist/**", "jest.config.js", "*.config.ts"],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

@@ -7,7 +7,9 @@
         "Diego Balmaceda <diego@xaes.dev>"
     ],
     "scripts": {
-        "backend-dev": "docker-compose up -d && yarn workspace @nicasource/backend migrate:up && yarn workspace @nicasource/backend dev"
+        "backend-dev": "docker-compose up -d && yarn workspace @nicasource/backend migrate:up && yarn workspace @nicasource/backend dev",
+        "frontend-dev": "yarn workspace @nicasource/frontend dev",
+        "all-dev": "yarn run frontend-dev & yarn run backend-dev"
     },
     "workspaces": [
         "./packages/*"
