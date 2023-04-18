@@ -1,5 +1,5 @@
-import { Send, Query } from "express-serve-static-core";
-import {Response} from "express";
+import { Send } from "express-serve-static-core";
+import { Response } from "express";
 
 
 export interface APIResponse<T> {
@@ -7,7 +7,7 @@ export interface APIResponse<T> {
     statusCode: number;
 }
 
-export interface TypedRequest<B = {}, P = {}> extends Express.Request {
+export interface TypedRequest<B = object, P = object> extends Express.Request {
     body: B,
     params: P
 }
@@ -22,5 +22,5 @@ export const sendOkResponse = <T>(response: TypedResponse<APIResponse<T>>, data:
         .json({
             data,
             statusCode: status || 200
-        })
-}
+        });
+};
