@@ -1,8 +1,12 @@
 import express from "express";
 import helmet from "helmet";
 import compression from "compression";
+import V1Router from "./v1/resources/router";
 
 const server = express();
+
+// API Versioning Routers.
+server.use("/api/v1", V1Router);
 
 // Enable GZIP compression.
 server.use(compression());

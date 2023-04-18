@@ -1,6 +1,6 @@
 import { Video, VideoParams } from "./entities/video";
-import { IVideoRepository } from "../../persistence/repositories/videoRepository";
-import { ICreatorRepository } from "../../persistence/repositories/creatorRepository";
+import VideoAggregate, { IVideoRepository } from "../../persistence/repositories/videoRepository";
+import CreatorAggregate, { ICreatorRepository } from "../../persistence/repositories/creatorRepository";
 import { Creator, CreatorParams } from "./entities/creator";
 import DomainException from "../common/exception";
 
@@ -12,15 +12,15 @@ export interface IAssetManager {
 
     // Videos.
     addVideo(params: VideoParams): Promise<Video>
-    publishVideo(id: string): Promise<Video>
-    unpublishVideo(id: string): Promise<Video>
+    publishVideo(creatorId: string, videoId: string): Promise<Video>
+    unpublishVideo(creatorId: string, videoId: string): Promise<Video>
     findVideoById(id: string): Promise<Video>
     findPublishedVideos(): Promise<Video[]>
     findPublishedVideosByCreatorId(creatorId: string): Promise<Video[]>
     findAllVideosByCreatorId(creatorId: string): Promise<Video[]>
 }
 
-export default class AssetManager implements IAssetManager {
+export class AssetManager implements IAssetManager {
 
     private videoRepository: IVideoRepository;
     private creatorRepository: ICreatorRepository;
@@ -42,16 +42,26 @@ export default class AssetManager implements IAssetManager {
         }
     }
 
-    async publishVideo(id: string): Promise<Video> {
-        const video = await this.videoRepository.getById(id);
-        video.publish();
-        return await this.videoRepository.save(video);
+    async publishVideo(creatorId: string, videoId: string): Promise<Video> {
+        const video = await this.videoRepository.findOne({
+            where: { id: videoId, creatorId }
+        });
+        if (video) {
+            video.publish();
+            return await this.videoRepository.save(video);
+        }
+        throw new DomainException(`Video with ID ${videoId} and Creator ID ${creatorId} does not exists.`);
     }
 
-    async unpublishVideo(id: string): Promise<Video> {
-        const video = await this.videoRepository.getById(id);
-        video.unpublish();
-        return await this.videoRepository.save(video);
+    async unpublishVideo(creatorId: string, videoId: string): Promise<Video> {
+        const video = await this.videoRepository.findOne({
+            where: { id: videoId, creatorId }
+        });
+        if (video) {
+            video.unpublish();
+            return await this.videoRepository.save(video);
+        }
+        throw new DomainException(`Video with ID ${videoId} and Creator ID ${creatorId} does not exists.`);
     }
 
     async findCreatorByEmail(email: string): Promise<Creator> {
@@ -82,3 +92,6 @@ export default class AssetManager implements IAssetManager {
         return await this.videoRepository.findAll({ where: { creatorId } });
     }
 }
+
+const manager = new AssetManager(CreatorAggregate, VideoAggregate);
+export default manager;
