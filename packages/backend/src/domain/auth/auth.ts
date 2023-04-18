@@ -1,22 +1,23 @@
 import * as jwt from "jsonwebtoken";
-import { ICredentialRepository } from "../../persistence/repositories/credentialRepository";
+import AuthAggregate, { ICredentialRepository } from "../../persistence/repositories/credentialRepository";
 import { Credential, CredentialParams, CredentialType } from "./entities/credential";
 import { SessionToken } from "./entities/sessiontoken";
 import { User } from "./entities/user";
 import DomainException from "../common/exception";
+import Config from "../../../config/config";
 
 export class Auth {
     private readonly privateKey: string;
     private credentialRepository: ICredentialRepository;
 
-    constructor(privateKey: string, credentialRepository: ICredentialRepository) {
-        this.privateKey = privateKey;
+    constructor(credentialRepository: ICredentialRepository, privateKey?: string) {
+        this.privateKey = privateKey || Config.AUTH.PRIVATE_KEY;
         this.credentialRepository = credentialRepository;
     }
 
     async addCredential(params: CredentialParams): Promise<Credential>  {
         const credential = await Credential.newInstance(params);
-        return await this.credentialRepository.create(credential);
+        return await this.credentialRepository.save(credential);
     }
 
     async authenticate(user: User, credentialType: CredentialType, challenge: string): Promise<SessionToken> {
@@ -49,3 +50,7 @@ export class Auth {
         return this.credentialRepository.findOne({ where: { userId, credentialType } });
     }
 }
+
+
+const auth = new Auth(AuthAggregate);
+export default auth;

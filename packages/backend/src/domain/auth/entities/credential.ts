@@ -13,7 +13,7 @@ export interface CredentialAttributes extends EntityAttributes {
 }
 
 export interface CredentialParams {
-    credentialType: CredentialType,
+    credentialType?: CredentialType,
     credentialValue: string,
     userId: string,
 }
@@ -26,12 +26,14 @@ export class Credential extends Entity<CredentialAttributes, CredentialParams> {
 
     private static readonly SALT_ROUNDS = 10;
 
-    private static async hashPassword(password: string): Promise<string> {
+    static async hashPassword(password: string): Promise<string> {
+        console.log(password);
         return await bcrypt.hash(password, Credential.SALT_ROUNDS);
     }
 
     public static async newInstance(params: CredentialParams): Promise<Credential> {
-        if (params.credentialType !== CredentialType.PASSWORD)
+        const type = params.credentialType || CredentialType.PASSWORD;
+        if (type !== CredentialType.PASSWORD)
             throw new Error("Only password credentials are supported at this time.");
 
         const credential = new Credential(params);

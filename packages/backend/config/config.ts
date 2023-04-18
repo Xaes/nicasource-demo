@@ -12,5 +12,8 @@ export default {
     },
     API: {
         PORT: process.env.API_PORT || 8000
+    },
+    AUTH: {
+        PRIVATE_KEY: process.env.AUTH_PRIVATE_KEY || "random"
     }
 };

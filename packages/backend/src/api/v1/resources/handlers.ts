@@ -1,15 +1,19 @@
 import { APIOkResponse, sendOkResponse, TypedRequest, TypedResponse } from "../../types";
-import { Creator, CreatorParams } from "../../../domain/video/entities/creator";
+import { Creator } from "../../../domain/video/entities/creator";
 import AssetManager from "../../../domain/video/assetManager";
 import { Video, VideoParams } from "../../../domain/video/entities/video";
+import { AddCreatorParams } from "./model";
+import Auth from "../../../domain/auth/auth";
 
 export const GetCreatorByIdHandler = async (request: TypedRequest<object, { creatorId: string }>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
     const creator = await AssetManager.findCreatorById(request.params.creatorId);
     sendOkResponse<Creator>(response, creator);
 };
 
-export const PostCreatorHandler = async (request: TypedRequest<CreatorParams>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
-    const newCreator = await AssetManager.addCreator(request.body);
+export const PostCreatorHandler = async (request: TypedRequest<AddCreatorParams>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
+    // TODO: Add transactional control. If addCredential fails, creator will still be created.
+    const newCreator = await AssetManager.addCreator(request.body.creator);
+    await Auth.addCredential({ ...request.body.credential, userId: newCreator.id });
     sendOkResponse<Creator>(response, newCreator);
 };
 

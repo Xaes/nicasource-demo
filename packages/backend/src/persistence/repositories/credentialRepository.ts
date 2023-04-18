@@ -35,3 +35,6 @@ export class CredentialRepository implements ICredentialRepository {
         return await this.model.findOne(options);
     }
 }
+
+const AuthAggregate = new CredentialRepository();
+export default AuthAggregate;

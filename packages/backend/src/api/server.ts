@@ -22,6 +22,9 @@ server.use(bodyParser.json());
 // Disable Express Fingerprint.
 server.disable("x-powered-by");
 
+// API Versioning Routers.
+server.use("/api/v1", V1Router);
+
 // Custom Error Handler.
 // Eslint complains about NextFunction not being used, but Express needs it, so it knows it's an error handler.
 // eslint-disable-next-line
@@ -32,8 +35,5 @@ server.use((error: Error, req: TypedRequest, res: TypedResponse<APIErrorResponse
         (error as ValidationError).errors.map(e => e.message).join(", ") : error.message;
     sendError(res, error, errorCode);
 });
-
-// API Versioning Routers.
-server.use("/api/v1", V1Router);
 
 export default server;
