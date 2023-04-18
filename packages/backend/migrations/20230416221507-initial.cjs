@@ -1,3 +1,5 @@
+const { query } = require("express");
+const { DataTypes } = require("sequelize");
 module.exports = {
     up: (queryInterface, Sequelize) => queryInterface.sequelize.transaction(
     async (transaction) => {
@@ -150,12 +152,48 @@ module.exports = {
             transaction
         });
 
+        await queryInterface.createTable("credential", {
+            id: {
+                type: Sequelize.DataTypes.UUID,
+                primaryKey: true,
+                allowNull: false,
+                unique: true,
+            },
+            createdAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            updatedAt: {
+                type: Sequelize.DataTypes.DATE,
+                allowNull: false
+            },
+            credentialType: {
+                type: DataTypes.ENUM("password", "totp"),
+                allowNull: false,
+                defaultValue: "password"
+            },
+            credentialValue: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            userId: {
+                type: Sequelize.DataTypes.UUID,
+                references: {
+                    model: {
+                        tableName: "creator"
+                    },
+                    key: "id"
+                },
+                allowNull: false
+            }
+        }, { transaction });
     }),
     down: (queryInterface) => queryInterface.sequelize.transaction(
     async (transaction) => {
         await queryInterface.dropTable("like", { transaction });
         await queryInterface.dropTable("video", { transaction });
         await queryInterface.dropTable("follow", { transaction });
+        await queryInterface.dropTable("credential", { transaction });
         await queryInterface.dropTable("creator", { transaction });
     })
 };

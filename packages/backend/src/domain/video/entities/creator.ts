@@ -2,6 +2,7 @@ import Entity, { EntityAttributes } from "../../common/entity";
 import { Follow } from "./follow";
 import DomainException from "../../common/exception";
 import { FollowRepositoryFactory } from "../../../persistence/factories/repositoryFactory";
+import { User } from "../../auth/entities/user";
 
 export interface CreatorAttributes extends EntityAttributes {
     name: string,
@@ -13,7 +14,7 @@ export interface CreatorParams {
     email: string,
 }
 
-export class Creator extends Entity<CreatorAttributes, CreatorParams> {
+export class Creator extends Entity<CreatorAttributes, CreatorParams> implements User {
     public name!: string;
     public email!: string;
 

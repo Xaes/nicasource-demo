@@ -5,6 +5,7 @@ import { DataTypes } from "sequelize";
 import SequelizeClient from "./database";
 import { DefaultSchema } from "../domain/common/entity";
 import { Like } from "../domain/video/entities/like";
+import { Credential } from "../domain/auth/entities/credential";
 
 export const CreatorModel = Creator.init({
     ...DefaultSchema,
@@ -123,6 +124,31 @@ export const LikeModel = Like.init({
     ]
 });
 
+export const CredentialModel = Credential.init({
+    ...DefaultSchema,
+    credentialType: {
+        type: DataTypes.ENUM("password", "totp"),
+        allowNull: false,
+        defaultValue: "password"
+    },
+    credentialValue: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    userId: {
+        type: DataTypes.UUIDV4,
+        allowNull: false,
+        validate: {
+            isUUID: 4
+        }
+    }
+}, {
+    sequelize: SequelizeClient,
+    tableName: "credential",
+    freezeTableName: true,
+    timestamps: true
+});
+
 
 // Associations:
 // Video - Creator: One to Many.
@@ -138,3 +164,7 @@ FollowModel.belongsTo(CreatorModel, { as: "following" });
 // Creator / Video - Like: Many to Many.
 CreatorModel.belongsToMany(VideoModel, { through: "like", foreignKey: "creatorId", as: "likedVideos" });
 VideoModel.belongsToMany(CreatorModel, { through: "like", foreignKey: "videoId", as: "likeUserIds" });
+
+// Credential - Creator: One to Many.
+CreatorModel.hasMany(CredentialModel, { foreignKey: "userId" });
+CredentialModel.belongsTo(CreatorModel, { foreignKey: "id" });
