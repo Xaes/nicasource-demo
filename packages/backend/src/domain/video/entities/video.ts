@@ -46,6 +46,7 @@ export class Video extends BaseModel<VideoAttributes, VideoParams> {
     }
 
     public async like(creatorId: string): Promise<Like> {
+        if (!this.isPublished) throw new DomainException("You can't like unpublished videos.");
         const repository = LikeRepositoryFactory.newInstance();
         return await repository.create({ videoId: this.id, creatorId });
     }

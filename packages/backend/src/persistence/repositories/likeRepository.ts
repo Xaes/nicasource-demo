@@ -17,11 +17,11 @@ export class LikeRepository implements ILikeRepository {
         });
     }
 
-    async exists(id: string): Promise<boolean> {
+    exists(): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
-    async getById(id: string): Promise<Like> {
+    getById(): Promise<Like> {
         throw new Error("Method not implemented.");
     }
 

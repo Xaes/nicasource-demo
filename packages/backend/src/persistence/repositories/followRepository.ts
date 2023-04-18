@@ -17,11 +17,11 @@ export class FollowRepository implements IFollowRepository {
         });
     }
 
-    async exists(id: string): Promise<boolean> {
+    exists(): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
-    async getById(id: string): Promise<Follow> {
+    getById(): Promise<Follow> {
         throw new Error("Method not implemented.");
     }
 

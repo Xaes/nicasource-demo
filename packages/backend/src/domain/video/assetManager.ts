@@ -16,10 +16,8 @@ export interface IAssetManager {
     unpublishVideo(id: string): Promise<Video>
     findVideoById(id: string): Promise<Video>
     findPublishedVideos(): Promise<Video[]>
-    findVideosByCreatorId(creatorId: string): Promise<Video[]>
-
-    // Likes.
-    findLikedVideosByCreatorId(creatorId: string): Promise<Video[]>
+    findPublishedVideosByCreatorId(creatorId: string): Promise<Video[]>
+    findAllVideosByCreatorId(creatorId: string): Promise<Video[]>
 }
 
 export default class AssetManager implements IAssetManager {
@@ -56,27 +54,31 @@ export default class AssetManager implements IAssetManager {
         return await this.videoRepository.save(video);
     }
 
-    findCreatorByEmail(email: string): Promise<Creator> {
-        throw new Error("Method not implemented.");
+    async findCreatorByEmail(email: string): Promise<Creator> {
+        const result = await this.creatorRepository.findOne({ where: { email } });
+        if (!result) throw new DomainException(`Creator with email ${email} not found.`);
+        else return result;
     }
 
     async findCreatorById(id: string): Promise<Creator> {
         return await this.creatorRepository.getById(id);
     }
 
-    findLikedVideosByCreatorId(creatorId: string): Promise<Video[]> {
-        throw new Error("Method not implemented.");
-    }
-
-    findPublishedVideos(): Promise<Video[]> {
-        throw new Error("Method not implemented.");
+    async findPublishedVideos(): Promise<Video[]> {
+        return await this.videoRepository.findAll({ where: { isPublished: true } });
     }
 
     async findVideoById(id: string): Promise<Video> {
         return await this.videoRepository.getById(id);
     }
 
-    findVideosByCreatorId(creatorId: string): Promise<Video[]> {
-        throw new Error("Method not implemented.");
+    async findPublishedVideosByCreatorId(creatorId: string): Promise<Video[]> {
+        return await this.videoRepository.findAll({
+            where: { creatorId, isPublished: true }
+        });
+    }
+
+    async findAllVideosByCreatorId(creatorId: string): Promise<Video[]> {
+        return await this.videoRepository.findAll({ where: { creatorId } });
     }
 }
