@@ -1,8 +1,7 @@
 module.exports = {
     apps : [{
         name: "nicasource/backend",
-        script: "yarn",
-        args: "start-production",
+        script: "yarn run start-production",
         watch: ".",
         time: true,
         instances: 1,
