@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: `${process.cwd()}/.env`});
+dotenv.config({ path: `${process.cwd()}/.production.env`});
 
 module.exports = {
     apps : [{
@@ -18,6 +18,11 @@ module.exports = {
             POSTGRES_HOST: process.env.PRODUCTION_POSTGRES_HOST,
             POSTGRES_PORT: process.env.PRODUCTION_POSTGRES_PORT,
             AUTH_PRIVATE_KEY: process.env.AUTH_PRIVATE_KEY,
+            PRODUCTION_POSTGRES_USER: process.env.PRODUCTION_POSTGRES_USER,
+            PRODUCTION_POSTGRES_PASSWORD: process.env.PRODUCTION_POSTGRES_PASSWORD,
+            PRODUCTION_POSTGRES_DB: process.env.PRODUCTION_POSTGRES_DB,
+            PRODUCTION_POSTGRES_HOST: process.env.PRODUCTION_POSTGRES_HOST,
+            PRODUCTION_POSTGRES_PORT: process.env.PRODUCTION_POSTGRES_PORT,
             "NODE_ENV": "production",
         },
     }],
@@ -29,7 +34,8 @@ module.exports = {
             ref: "origin/main",
             repo: "https://github.com/Xaes/nicasource-demo.git",
             path: "/home/ubuntu/nicasource-demo",
-            "post-deploy" : "rm -rf node_modules && cd packages/backend/ && yarn install && yarn build && pm2 reload ecosystem.config.cjs --env production",
+            "pre-deploy-local": "./deployenvs.sh",
+            "post-deploy" : "rm -rf node_modules && cd packages/backend/ && yarn install && yarn build && yarn migrate-prod:up && pm2 reload ecosystem.config.cjs --env production",
         }
     }
 };
