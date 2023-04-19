@@ -27,7 +27,7 @@ module.exports = {
             user: "ubuntu",
             key: "dev-pem.pem",
             host: "3.22.179.39",
-            ref: "origin/master",
+            ref: "origin/main",
             repo: "https://github.com/Xaes/nicasource-demo.git",
             path: "/home/ubuntu/nicasource-demo",
             "pre-deploy-local": "rm -rf node_modules",
