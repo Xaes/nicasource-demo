@@ -10,6 +10,7 @@ module.exports = {
         instances: 1,
         autorestart: true,
         max_restarts: 50,
+        node_args: "--es-module-specifier-resolution=node",
         env_production: {
             POSTGRES_USER: process.env.PRODUCTION_POSTGRES_USER,
             POSTGRES_PASSWORD: process.env.PRODUCTION_POSTGRES_PASSWORD,

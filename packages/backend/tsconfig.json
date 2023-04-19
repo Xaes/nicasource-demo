@@ -12,6 +12,7 @@
         "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
+        "baseUrl": ".",
         "emitDecoratorMetadata": true
     },
     "include": ["src/**/*", "tests/**/*"],
