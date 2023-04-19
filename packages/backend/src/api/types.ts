@@ -4,7 +4,6 @@ import { Error } from "sequelize";
 import { SessionPayload } from "../domain/auth/auth";
 import { IncomingHttpHeaders } from "http";
 
-
 export interface APIOkResponse<T> {
     data: T | T[];
     statusCode: number;

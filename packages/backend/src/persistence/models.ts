@@ -152,8 +152,8 @@ export const CredentialModel = Credential.init({
 
 // Associations:
 // Video - Creator: One to Many.
-CreatorModel.hasMany(VideoModel, { foreignKey: "creatorId" });
-VideoModel.belongsTo(CreatorModel, { foreignKey: "id" });
+CreatorModel.hasMany(VideoModel, { foreignKey: "creatorId", as: "videos" });
+VideoModel.belongsTo(CreatorModel, { foreignKey: "creatorId", as: "creator" });
 
 // Creator - Follow: Multiple association with same model.
 CreatorModel.belongsToMany(CreatorModel, { through: "follow", foreignKey: "followerId", as: "followers" });
@@ -167,4 +167,4 @@ VideoModel.belongsToMany(CreatorModel, { through: "like", foreignKey: "videoId",
 
 // Credential - Creator: One to Many.
 CreatorModel.hasMany(CredentialModel, { foreignKey: "userId" });
-CredentialModel.belongsTo(CreatorModel, { foreignKey: "id" });
+CredentialModel.belongsTo(CreatorModel, { foreignKey: "userId" });

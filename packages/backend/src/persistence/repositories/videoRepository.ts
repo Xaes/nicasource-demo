@@ -20,7 +20,10 @@ export class VideoRepository implements IVideoRepository {
 
     async getById(id: string): Promise<Video> {
         const entity = await this.model.findByPk(id, {
-            include: { model: CreatorModel, as: "likeUserIds" }
+            include: [
+                { model: CreatorModel, as: "likeUserIds" },
+                { model: CreatorModel, as: "creator" }
+            ]
         });
         if (!entity) throw new DomainException(`Video with ID ${id} was not found.`);
         else return entity;

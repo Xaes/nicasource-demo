@@ -3,6 +3,7 @@ import VideoAggregate, { IVideoRepository } from "../../persistence/repositories
 import CreatorAggregate, { ICreatorRepository } from "../../persistence/repositories/creatorRepository";
 import { Creator, CreatorParams } from "./entities/creator";
 import DomainException from "../common/exception";
+import { CreatorModel } from "../../persistence/models";
 
 export interface IAssetManager {
     // Creators.
@@ -75,7 +76,12 @@ export class AssetManager implements IAssetManager {
     }
 
     async findPublishedVideos(): Promise<Video[]> {
-        return await this.videoRepository.findAll({ where: { isPublished: true } });
+        return await this.videoRepository.findAll({
+            where: { isPublished: true },
+            include: [
+                { model: CreatorModel, as: "creator" }
+            ]
+        });
     }
 
     async findVideoById(id: string): Promise<Video> {
@@ -89,7 +95,13 @@ export class AssetManager implements IAssetManager {
     }
 
     async findAllVideosByCreatorId(creatorId: string): Promise<Video[]> {
-        return await this.videoRepository.findAll({ where: { creatorId } });
+        return await this.videoRepository.findAll({
+            where: { creatorId },
+            include: [
+                { model: CreatorModel, as: "likeUserIds" },
+                { model: CreatorModel, as: "creator" }
+            ]
+        });
     }
 }
 
