@@ -2,5 +2,6 @@ const path = require("path");
 
 module.exports = {
     "config": path.resolve("config", "migrations.cjs"),
-    "migrations-path": path.resolve("bootstrap", "migrations")
+    "migrations-path": path.resolve("bootstrap", "migrations"),
+    "seeders-path": path.resolve("bootstrap", "seeders"),
 }

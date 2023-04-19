@@ -1,4 +1,3 @@
-const { query } = require("express");
 const { DataTypes } = require("sequelize");
 module.exports = {
     up: (queryInterface, Sequelize) => queryInterface.sequelize.transaction(
