@@ -11,7 +11,7 @@ const Navbar = (): ReactElement => {
                 </div>
             </div>
         </nav>
-    )
-}
+    );
+};
 
 export default Navbar;

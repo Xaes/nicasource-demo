@@ -1,20 +1,21 @@
 import { ReactElement } from "react";
 import VideoItem from "./videoItem";
+import { Video } from "../../types";
 
-const VideoList = (): ReactElement => {
+interface Props {
+    videos: Video[];
+}
+
+const VideoList = (props: Props): ReactElement => {
     return (
         <div className="grid grid-cols-12 gap-12">
-            <div className="col-span-3">
-                <VideoItem />
-            </div>
-            <div className="col-span-3">
-                <VideoItem />
-            </div>
-            <div className="col-span-3">
-                <VideoItem />
-            </div>
+            {props.videos.map(video => (
+                <div className="col-span-3" key={video.id}>
+                    <VideoItem {...video} />
+                </div>
+            ))}
         </div>
-    )
-}
+    );
+};
 
 export default VideoList;

@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/layout";
-import VideoList from "../components/videoList";
+import VideoFeed from "../modules/videoFeed";
 
 const Home = () => {
     return (
@@ -9,11 +9,9 @@ const Home = () => {
                 <h2>Home</h2>
                 <p className="text-slate-400">Browse all our videos</p>
             </header>
-            <section>
-                <VideoList />
-            </section>
+            <VideoFeed />
         </Layout>
-    )
+    );
 };
 
 export default Home;

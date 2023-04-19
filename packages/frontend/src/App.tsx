@@ -1,8 +1,13 @@
 import Home from "./pages/home";
+import { ReactElement } from "react";
+import { Provider as ReduxProvider } from "react-redux";
+import Store from "./redux/store";
 
-const App = () => {
+const App = (): ReactElement => {
     return (
-        <Home />
+        <ReduxProvider store={Store}>
+            <Home />
+        </ReduxProvider>
     );
 };
 

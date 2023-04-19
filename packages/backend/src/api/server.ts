@@ -3,9 +3,13 @@ import helmet from "helmet";
 import compression from "compression";
 import V1Router from "./v1/resources/router";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { errorHandler } from "./v1/resources/middlewares";
 
 const server = express();
+
+// CORS.
+server.use(cors());
 
 // Enable GZIP compression.
 server.use(compression());

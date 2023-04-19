@@ -19,7 +19,7 @@ const Layout = (props: Props): ReactElement => {
                 <small>Made by <a href="https://xaes.dev" className="font-semibold text-slate-200 hover:text-indigo-500">Diego Balmaceda</a>.</small>
             </footer>
         </div>
-    )
-}
+    );
+};
 
 export default Layout;
