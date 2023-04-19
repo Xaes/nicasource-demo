@@ -4,5 +4,5 @@ import AxiosClient from "../../axios";
 
 export const fetchAllPublishedVideos = createAsyncThunk<APIOkMultipleResponse<Video>>(
     "Video/FetchVideo",
-    async () => (await AxiosClient.get("/videos")).data
+    async () => (await AxiosClient.get<APIOkMultipleResponse<Video>>("/videos")).data
 );
