@@ -26,7 +26,7 @@ module.exports = {
         production : {
             user: "ubuntu",
             key: "./dev-pem.pem",
-            host: "ec2-3-21-93-57.us-east-2.compute.amazonaws.com",
+            host: "3.22.179.39",
             ref: "origin/master",
             repo: "https://github.com/Xaes/nicasource-demo.git",
             path: "~/",
