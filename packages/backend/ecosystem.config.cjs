@@ -4,7 +4,7 @@ dotenv.config({ path: `${process.cwd()}/.env`});
 module.exports = {
     apps : [{
         name: "nicasource/backend",
-        script: "dist/main.js",
+        script: "dist/src/main.js",
         watch: false,
         time: true,
         instances: 1,
