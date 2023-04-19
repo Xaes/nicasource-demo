@@ -2,12 +2,12 @@ module.exports = {
     apps : [{
         name: "nicasource/backend",
         script: "yarn run start-production",
-        watch: ".",
+        watch: false,
         time: true,
         instances: 1,
         autorestart: true,
         max_restarts: 50,
-        env: {
+        env_production: {
             POSTGRES_USER: process.env.PRODUCTION_POSTGRES_USER,
             POSTGRES_PASSWORD: process.env.PRODUCTION_POSTGRES_PASSWORD,
             POSTGRES_DB: process.env.PRODUCTION_POSTGRES_DB,
@@ -30,7 +30,7 @@ module.exports = {
             repo: "https://github.com/Xaes/nicasource-demo.git",
             path: "/home/ubuntu/nicasource-demo",
             "pre-deploy-local": "rm -rf node_modules",
-            "post-deploy" : "yarn install && pm2 reload packages/backend/ecosystem.config.cjs --env production",
+            "post-deploy" : "yarn install && pm2 reload 'yarn start-production' --env production",
             "pre-setup": ""
         }
     }
