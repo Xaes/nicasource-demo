@@ -8,7 +8,7 @@ interface Props {
 
 const VideoList = (props: Props): ReactElement => {
     return (
-        <div className="grid grid-cols-12 gap-12">
+        <div className="grid grid-cols-12 gap-y-16 gap-x-12">
             {props.videos.map(video => (
                 <div className="col-span-3" key={video.id}>
                     <VideoItem {...video} />
