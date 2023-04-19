@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config({ path: `${process.cwd()}/.env`});
+
 module.exports = {
     apps : [{
         name: "nicasource/backend",
@@ -19,7 +22,8 @@ module.exports = {
             PRODUCTION_POSTGRES_DB: process.env.PRODUCTION_POSTGRES_DB,
             PRODUCTION_POSTGRES_HOST: process.env.PRODUCTION_POSTGRES_HOST,
             PRODUCTION_POSTGRES_PORT: process.env.PRODUCTION_POSTGRES_PORT,
-            AUTH_PRIVATE_KEY: process.env.AUTH_PRIVATE_KEY
+            AUTH_PRIVATE_KEY: process.env.AUTH_PRIVATE_KEY,
+            "NODE_ENV": "production",
         },
     }],
     deploy : {
