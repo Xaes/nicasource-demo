@@ -131,3 +131,6 @@ dist
 
 # WebStorm
 .idea
+
+# PEM files
+*.pem
