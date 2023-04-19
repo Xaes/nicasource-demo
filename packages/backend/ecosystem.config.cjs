@@ -1,7 +1,7 @@
 module.exports = {
     apps : [{
         name: "nicasource/backend",
-        script: "packages/backend/src/main.ts",
+        script: "src/main.ts",
         watch: false,
         time: true,
         instances: 1,
@@ -29,9 +29,8 @@ module.exports = {
             host: "3.22.179.39",
             ref: "origin/main",
             repo: "https://github.com/Xaes/nicasource-demo.git",
-            path: "/home/ubuntu/nicasource-demo",
-            "pre-deploy-local": "rm -rf node_modules",
-            "post-deploy" : "rm -rf node_modules && cd packages/backend/ && yarn install && yarn migrate-prod:up && pm2 reload ecosystem.config.cjs --env production",
+            path: "/home/ubuntu/nicasource-demo/packages/backend",
+            "post-deploy" : "rm -rf node_modules && yarn install && yarn migrate-prod:up && pm2 reload ecosystem.config.cjs --env production",
             "pre-setup": ""
         }
     }
