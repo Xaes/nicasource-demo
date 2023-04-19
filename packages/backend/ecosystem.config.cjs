@@ -25,11 +25,11 @@ module.exports = {
     deploy : {
         production : {
             user: "ubuntu",
-            key: "./dev-pem.pem",
+            key: "dev-pem.pem",
             host: "3.22.179.39",
             ref: "origin/master",
             repo: "https://github.com/Xaes/nicasource-demo.git",
-            path: "~/",
+            path: "/home/ubuntu/nicasource-demo",
             "pre-deploy-local": "rm -rf node_modules",
             "post-deploy" : "yarn install && pm2 reload ecosystem.config.cjs --env production",
             "pre-setup": ""
