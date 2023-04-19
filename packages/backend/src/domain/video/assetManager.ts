@@ -1,4 +1,4 @@
-import { Video, VideoParams } from "./entities/video";
+import { UpdateVideoParams, Video, VideoParams } from "./entities/video";
 import VideoAggregate, { IVideoRepository } from "../../persistence/repositories/videoRepository";
 import CreatorAggregate, { ICreatorRepository } from "../../persistence/repositories/creatorRepository";
 import { Creator, CreatorParams } from "./entities/creator";
@@ -13,6 +13,7 @@ export interface IAssetManager {
 
     // Videos.
     addVideo(params: VideoParams): Promise<Video>
+    updateVideo(videoId: string, params: VideoParams): Promise<Video>
     publishVideo(creatorId: string, videoId: string): Promise<Video>
     unpublishVideo(creatorId: string, videoId: string): Promise<Video>
     findVideoById(id: string): Promise<Video>
@@ -42,6 +43,13 @@ export class AssetManager implements IAssetManager {
             return await this.videoRepository.create(params);
         }
     }
+
+    async updateVideo(videoId: string, params: UpdateVideoParams): Promise<Video> {
+        const video = await this.findVideoById(videoId);
+        video.modify(params);
+        return await this.videoRepository.save(video);
+    }
+
 
     async publishVideo(creatorId: string, videoId: string): Promise<Video> {
         const video = await this.videoRepository.findOne({

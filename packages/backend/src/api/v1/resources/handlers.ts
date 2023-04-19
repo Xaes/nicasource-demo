@@ -2,11 +2,11 @@ import { APIOkResponse, sendOkResponse, TypedRequest, TypedResponse } from "../.
 import { Creator } from "../../../domain/video/entities/creator";
 import AssetManager from "../../../domain/video/assetManager";
 import { Video } from "../../../domain/video/entities/video";
-import { AddCreatorParams, CreateVideoParams, LoginParams } from "./model";
+import { AddCreatorParams, CreateVideoParams, CreatorIdParam, LoginParams, PatchVideoParams, VideoIdParam } from "./model";
 import Auth from "../../../domain/auth/auth";
 import { SessionToken } from "../../../domain/auth/entities/sessiontoken";
 
-export const GetCreatorByIdHandler = async (request: TypedRequest<object, { creatorId: string }>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
+export const GetCreatorByIdHandler = async (request: TypedRequest<object, CreatorIdParam>, response: TypedResponse<APIOkResponse<Creator>>): Promise<void> => {
     const creator = await AssetManager.findCreatorById(request.params.creatorId);
     sendOkResponse<Creator>(response, creator);
 };
@@ -29,34 +29,38 @@ export const GetVideosHandler = async (request: TypedRequest, response: TypedRes
     sendOkResponse<Video>(response, videoList);
 };
 
-export const GetVideoByIdHandler = async (request: TypedRequest<object, { videoId: string}>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+export const GetVideoByIdHandler = async (request: TypedRequest<object, VideoIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
     const video = await AssetManager.findVideoById(request.params.videoId);
     sendOkResponse<Video>(response, video);
 };
 
-export const GetVideosByCreatorId = async(request: TypedRequest<object, { creatorId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+export const GetVideosByCreatorId = async(request: TypedRequest<object, CreatorIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
     const videos = await AssetManager.findAllVideosByCreatorId(request.params.creatorId);
     sendOkResponse<Video>(response, videos);
 };
 
 export const PostVideoHandler = async (request: TypedRequest<CreateVideoParams>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
-    if (request.session) {
-        const newVideo = await AssetManager.addVideo({
-            ...request.body,
-            creatorId: request.session.userId
-        });
-        sendOkResponse<Video>(response, newVideo);
-    }
+    const newVideo = await AssetManager.addVideo({
+        ...request.body,
+        creatorId: request.session?.userId as string
+    });
+    sendOkResponse<Video>(response, newVideo);
 };
 
-export const PublishVideoHandler = async (request: TypedRequest<object, { videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+export const PatchVideoHandler = async (request: TypedRequest<PatchVideoParams, VideoIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+    const updatedVideo = await AssetManager.updateVideo(request.params.videoId, request.body);
+
+    sendOkResponse<Video>(response, updatedVideo);
+};
+
+export const PublishVideoHandler = async (request: TypedRequest<object, VideoIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
     if (request.session) {
         const publishedVideo = await AssetManager.publishVideo(request.session.userId, request.params.videoId);
         sendOkResponse<Video>(response, publishedVideo);
     }
 };
 
-export const UnpublishVideoHandler = async (request: TypedRequest<object, { videoId: string }>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
+export const UnpublishVideoHandler = async (request: TypedRequest<object, VideoIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
     if (request.session) {
         const publishedVideo = await AssetManager.unpublishVideo(request.session.userId, request.params.videoId);
         sendOkResponse<Video>(response, publishedVideo);

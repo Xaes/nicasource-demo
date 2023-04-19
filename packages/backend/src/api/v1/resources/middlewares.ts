@@ -1,10 +1,8 @@
 import { APIErrorResponse, sendError, TypedRequest, TypedResponse } from "../../types";
 import { NextFunction } from "express-serve-static-core";
 import { ValidationError } from "sequelize";
-import * as jwt from "jsonwebtoken";
-import Config from "../../../../config/config";
 import InvalidSession from "./exception";
-import { SessionPayload } from "../../../domain/auth/auth";
+import Auth from "../../../domain/auth/auth";
 import asyncHandler from "express-async-handler";
 
 // Eslint complains about NextFunction not being used, but Express needs it, so it knows it's an error handler.
@@ -31,10 +29,20 @@ export const errorHandler = (error: Error, req: TypedRequest, res: TypedResponse
     sendError(res, error, errorCode);
 };
 
-export const authenticateJWT = asyncHandler((req: TypedRequest, res: TypedResponse<object>, next: NextFunction) => {
+export const secured = asyncHandler((req: TypedRequest, res: TypedResponse<object>, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (authHeader) {
-        const token = authHeader.split(" ")[1];
+        const parts = authHeader.split(" ");
+        const token = parts && parts.length === 2 ? parts[1] : "";
+        Auth.verifyAccessToken(token).then((payload) => {
+            req.session = payload;
+            next();
+        }).catch((error) => {
+            const err = error as Error;
+            throw new InvalidSession(`Access session token is invalid: ${err?.message}`);
+        });
+
+        /*
         jwt.verify(token, Config.AUTH.PRIVATE_KEY, { complete: undefined }, (err, payload): void => {
             if (err) throw new InvalidSession("Provided session token is invalid");
             else {
@@ -42,5 +50,6 @@ export const authenticateJWT = asyncHandler((req: TypedRequest, res: TypedRespon
                 next();
             }
         });
-    } else throw new InvalidSession("No session token was provided");
+        */
+    } else throw new InvalidSession("No access token was provided");
 });

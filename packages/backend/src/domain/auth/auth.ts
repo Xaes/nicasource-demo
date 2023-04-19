@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import AuthAggregate, { ICredentialRepository } from "../../persistence/repositories/credentialRepository";
+import CredentialRepository, { ICredentialRepository } from "../../persistence/repositories/credentialRepository";
 import { Credential, CredentialParams, CredentialType } from "./entities/credential";
 import { SessionToken } from "./entities/sessiontoken";
 import DomainException from "../common/exception";
@@ -35,6 +35,15 @@ export class Auth {
         return new SessionToken(accessToken, "refreshToken", new Date());
     }
 
+    async verifyAccessToken(accessToken: string): Promise<SessionPayload> {
+        return new Promise((resolve, reject) => {
+            jwt.verify(accessToken, this.privateKey, (err, decoded) => {
+                if (err) reject(err);
+                else resolve(decoded as SessionPayload);
+            });
+        });
+    }
+
     /*
     async refreshAccessToken(refreshToken: string): Promise<SessionToken> {
         throw new Error("Not implemented.");
@@ -56,5 +65,5 @@ export class Auth {
 }
 
 
-const auth = new Auth(AuthAggregate);
+const auth = new Auth(CredentialRepository);
 export default auth;

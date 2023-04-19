@@ -20,6 +20,12 @@ export interface VideoParams {
     creatorId: string;
 }
 
+export interface UpdateVideoParams {
+    title?: string;
+    description?: string;
+    videoUrl?: string;
+}
+
 export class Video extends BaseModel<VideoAttributes, VideoParams> {
 
     public title!: string;
@@ -28,6 +34,12 @@ export class Video extends BaseModel<VideoAttributes, VideoParams> {
     public isPublished!: boolean;
     public videoUrl!: string;
     public creatorId!: string;
+
+    public modify(params: UpdateVideoParams) {
+        if (params.title !== undefined) this.title = params.title;
+        if (params.description !== undefined) this.description = params.description;
+        if (params.videoUrl !== undefined) this.videoUrl = params.videoUrl;
+    }
 
     public publish(): void {
         if (this.isPublished) throw new DomainException(`Video ID ${this.id} can't be updated because it is already published`);
