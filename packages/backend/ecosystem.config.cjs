@@ -4,13 +4,12 @@ dotenv.config({ path: `${process.cwd()}/.env`});
 module.exports = {
     apps : [{
         name: "nicasource/backend",
-        script: "src/main.ts",
+        script: "dist/main.js",
         watch: false,
         time: true,
         instances: 1,
         autorestart: true,
         max_restarts: 50,
-        interpreter: "ts-node",
         env_production: {
             POSTGRES_USER: process.env.PRODUCTION_POSTGRES_USER,
             POSTGRES_PASSWORD: process.env.PRODUCTION_POSTGRES_PASSWORD,
