@@ -3,8 +3,6 @@ const { DataTypes } = require("sequelize");
 module.exports = {
     up: (queryInterface, Sequelize) => queryInterface.sequelize.transaction(
     async (transaction) => {
-        // Creating DB.
-        await queryInterface.createDatabase("nicasource");
         // Creating Tables.
         await queryInterface.createTable("creator", {
             id: {
