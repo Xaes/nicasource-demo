@@ -14,9 +14,9 @@ const VideoFeed = (): ReactElement => {
 
     useEffect(() => {
         (async () => {
-            await dispatch(fetchAllPublishedVideos())
-        })()
-    }, [])
+            await dispatch(fetchAllPublishedVideos());
+        })();
+    }, []);
 
     return (
         <section>
@@ -25,7 +25,7 @@ const VideoFeed = (): ReactElement => {
             ) : null}
             <Loading loading={videoList.length === 0 && videoStatus === "loading"} />
         </section>
-    )
+    );
 };
 
 export default VideoFeed;
