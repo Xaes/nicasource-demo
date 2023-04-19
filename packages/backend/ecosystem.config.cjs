@@ -31,7 +31,7 @@ module.exports = {
             repo: "https://github.com/Xaes/nicasource-demo.git",
             path: "/home/ubuntu/nicasource-demo",
             "pre-deploy-local": "rm -rf node_modules",
-            "post-deploy" : "yarn install && pm2 reload ecosystem.config.cjs --env production",
+            "post-deploy" : "yarn install && pm2 reload packages/backend/ecosystem.config.cjs --env production",
             "pre-setup": ""
         }
     }
