@@ -26,7 +26,6 @@ export const VideoSlice = createSlice({
                 state.status = "finished";
             })
             .addCase(addVideo.fulfilled, (state, { payload }): void => {
-                VideoAdapter.addOne(state, payload.data);
                 state.status = "finished";
             })
             .addMatcher(

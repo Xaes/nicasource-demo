@@ -35,6 +35,12 @@ const Navbar = (): ReactElement => {
                     ) : (
                         <>
                             <Link
+                                to={Config.LINKS.STUDIO}
+                                className="font-semibold text-slate-400 hover:text-white transition-colors"
+                            >
+                                Your Studio
+                            </Link>
+                            <Link
                                 to={Config.LINKS.UPLOAD_VIDEO}
                                 className="button button-primary !flex items-center space-x-2"
                             >

@@ -11,7 +11,9 @@ AxiosClient.interceptors.response.use(undefined, (error: AxiosError) => {
         if (error.response.status === 401) {
             logout();
             window.location.replace("/signin");
-        } else if (error.response.status < 500) return Promise.reject(error.response.data);
+        } else if (error.response.status < 500) {
+            return Promise.reject(error.response.data);
+        } else console.error(error);
     } else console.error(error);
 })
 

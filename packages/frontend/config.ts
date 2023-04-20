@@ -5,6 +5,7 @@ export default {
         SIGNIN: "/signin",
         VIDEO_PAGE: (id: string) => `/video/${id}`,
         CREATOR_PAGE: (id: string) => `/creator/${id}`,
+        STUDIO: "/studio",
         UPLOAD_VIDEO: "/upload"
     },
     API: {
