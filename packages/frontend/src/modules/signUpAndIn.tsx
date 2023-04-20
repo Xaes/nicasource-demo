@@ -63,11 +63,7 @@ const SignUpAndIn = (): ReactElement => {
                                 />
                             ) : undefined}
                             {isSignIn && (
-                                <LoginForm
-                                    onSuccess={(): void => {
-                                        navigate(Config.LINKS.STUDIO);
-                                    }}
-                                />
+                                <LoginForm onSuccess={(): void => navigate(Config.LINKS.STUDIO)} />
                             )}
                         </div>
                         {feedback ? (

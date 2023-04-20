@@ -60,7 +60,6 @@ export const PostVideoHandler = async (request: TypedRequest<CreateVideoParams>,
 
 export const PatchVideoHandler = async (request: TypedRequest<PatchVideoParams, VideoIdParam>, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {
     const updatedVideo = await AssetManager.updateVideo(request.params.videoId, request.body);
-
     sendOkResponse<Video>(response, updatedVideo);
 };
 

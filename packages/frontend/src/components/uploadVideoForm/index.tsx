@@ -33,6 +33,7 @@ const CreateVideoForm = (): ReactElement => {
                     description: items.description.value as string,
                     videoUrl: items.url.value as string
                 }));
+                navigate(Config.LINKS.STUDIO);
             } catch (error) {
                 setError(error as APIErrorResponse);
             }
@@ -46,7 +47,6 @@ const CreateVideoForm = (): ReactElement => {
             onSubmit={async (event) => {
                 event.preventDefault();
                 await submit();
-                navigate(Config.LINKS.STUDIO);
             }}
         >
             <VideoCameraIcon className="w-8 h-8 text-indigo-400" />

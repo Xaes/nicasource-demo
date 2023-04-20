@@ -5,7 +5,7 @@ import {
     addVideo,
     fetchAllPublishedVideos,
     fetchAllVideosByCreatorId,
-    fetchPublishedVideoById
+    fetchPublishedVideoById, updateVideo
 } from "../actions/video";
 
 export const VideoAdapter = createEntityAdapter<Video>({
@@ -34,6 +34,10 @@ export const VideoSlice = createSlice({
                 VideoAdapter.addMany(state, payload.data);
                 state.status = "finished";
             })
+            .addCase(updateVideo.fulfilled, (state, { payload }): void => {
+                VideoAdapter.updateOne(state, { id: payload.data.id, changes: payload.data });
+                state.status = "finished";
+            })
             .addCase(addVideo.fulfilled, (state): void => {
                 state.status = "finished";
             })
@@ -41,7 +45,8 @@ export const VideoSlice = createSlice({
                 isAnyOf(
                     fetchAllPublishedVideos.pending,
                     fetchPublishedVideoById.pending,
-                    addVideo.pending
+                    addVideo.pending,
+                    updateVideo.pending,
                 ),
                 (state) => {
                     state.status = "loading";
@@ -51,7 +56,8 @@ export const VideoSlice = createSlice({
                 isAnyOf(
                     fetchAllPublishedVideos.rejected,
                     fetchPublishedVideoById.rejected,
-                    addVideo.rejected
+                    addVideo.rejected,
+                    updateVideo.rejected
                 ),
                 (state) => {
                     state.status = "error";

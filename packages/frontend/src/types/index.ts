@@ -40,3 +40,9 @@ export interface CreateVideoParams {
     description: string;
     videoUrl: string;
 }
+
+export interface UpdateVideoParams {
+    id: string;
+    title: string;
+    description: string;
+}

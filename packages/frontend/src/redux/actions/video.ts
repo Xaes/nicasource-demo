@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { APIOkMultipleResponse, APIOkSingleResponse, CreateVideoParams, Video } from "../../types";
+import { APIOkMultipleResponse, APIOkSingleResponse, CreateVideoParams, UpdateVideoParams, Video } from "../../types";
 import AxiosClient from "../../axios";
 
 export const fetchAllVideosByCreatorId = createAsyncThunk<APIOkMultipleResponse<Video>, string>(
@@ -21,3 +21,8 @@ export const addVideo = createAsyncThunk<APIOkSingleResponse<Video>, CreateVideo
     "Video/CreateVideo",
     async (params: CreateVideoParams) => (await AxiosClient.post<APIOkSingleResponse<Video>>("/videos", params)).data
 );
+
+export const updateVideo = createAsyncThunk<APIOkSingleResponse<Video>, UpdateVideoParams>(
+    "Video/UpdateVideo",
+    async (params: UpdateVideoParams) => (await AxiosClient.patch(`/videos/${params.id}`, params)).data
+)

@@ -59,6 +59,10 @@ h6 {
     @apply border border-indigo-300/10 bg-indigo-600 text-white hover:bg-indigo-400 hover:text-white;
 }
 
+.button.button-secondary{
+    @apply border border-indigo-300/10 bg-gray-900 text-white hover:bg-gray-800;
+}
+
 .button[disabled] {
     @apply bg-indigo-900 text-slate-400 select-none pointer-events-none;
 }
