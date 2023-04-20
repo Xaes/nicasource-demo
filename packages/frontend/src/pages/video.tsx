@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 import VideoEdit from "../components/videoEdit";
 
 const VideoPage = (): ReactElement => {
-    const { isLoggedIn, creator } = useAuth();
+    const { isLoggedIn  } = useAuth();
     return (
         <section>
             <div className="grid grid-cols-12 gap-x-16">

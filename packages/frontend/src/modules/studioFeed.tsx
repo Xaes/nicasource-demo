@@ -3,7 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { RootState } from "../redux/slices";
-import { selectAll, selectEntities } from "../redux/slices/video";
+import { selectAll } from "../redux/slices/video";
 import { fetchAllVideosByCreatorId } from "../redux/actions/video";
 import VideoList from "../components/videoList";
 import Loading from "../components/loading";
@@ -26,7 +26,7 @@ const StudioFeed = (): ReactElement | null => {
             <VideoList videos={videosByCreator} showBadges={true} />
             <Loading loading={videosByCreator.length === 0 && videoStatus === "loading"} />
         </section>
-    ); else return null;
-}
+    ); return null;
+};
 
 export default StudioFeed;

@@ -38,7 +38,7 @@ const Navbar = (): ReactElement => {
                                 to={Config.LINKS.STUDIO}
                                 className={({ isActive }) =>
                                     isActive ? "font-semibold text-indigo-500" :
-                                    "font-semibold text-slate-400 hover:text-white transition-colors"
+                                        "font-semibold text-slate-400 hover:text-white transition-colors"
                                 }
                             >
                                 Your Studio

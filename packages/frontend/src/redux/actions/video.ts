@@ -25,7 +25,7 @@ export const addVideo = createAsyncThunk<APIOkSingleResponse<Video>, CreateVideo
 export const updateVideo = createAsyncThunk<APIOkSingleResponse<Video>, UpdateVideoParams>(
     "Video/UpdateVideo",
     async (params: UpdateVideoParams) => (await AxiosClient.patch(`/videos/${params.id}`, params)).data
-)
+);
 
 export const publishVideo = createAsyncThunk<APIOkSingleResponse<Video>, string>(
     "Video/PublishVideo",
@@ -35,5 +35,5 @@ export const publishVideo = createAsyncThunk<APIOkSingleResponse<Video>, string>
 export const unpublishVideo = createAsyncThunk<APIOkSingleResponse<Video>, string>(
     "Video/UnpublishVideo",
     async (videoId: string) => (await AxiosClient.patch(`/videos/${videoId}/unpublish`)).data
-)
+);
 

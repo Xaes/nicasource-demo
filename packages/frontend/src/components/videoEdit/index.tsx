@@ -111,7 +111,7 @@ const VideoEdit = (): ReactElement | null => {
                 </div>
             </>
         );
-    } else return null;
-}
+    } return null;
+};
 
 export default VideoEdit;

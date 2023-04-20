@@ -13,7 +13,7 @@ const RegisterCTA = (): ReactElement => {
                 Sign Up
             </Link>
         </div>
-    )
-}
+    );
+};
 
 export default RegisterCTA;

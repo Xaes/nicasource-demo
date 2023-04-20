@@ -15,7 +15,7 @@ const Studio = (): ReactElement | null => {
                 <StudioFeed />
             </div>
         </section>
-    ); else return null;
-}
+    ); return null;
+};
 
 export default Studio;
