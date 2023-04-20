@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { RootState } from "../../redux/slices";
 import { selectById } from "../../redux/slices/video";
 import useForm from "../../hooks/useForm";
-import { fetchPublishedVideoById, updateVideo } from "../../redux/actions/video";
+import { fetchPublishedVideoById, publishVideo, unpublishVideo, updateVideo } from "../../redux/actions/video";
 import { APIErrorResponse } from "../../types";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { PencilIcon } from "@heroicons/react/24/outline";
@@ -47,16 +47,31 @@ const VideoEdit = (): ReactElement | null => {
 
     if (video && creator && video.creatorId === creator.id) {
         return (
-            <div className="rounded-lg bg-gray-900 px-10 py-12 shadow-2xl border border-indigo-300/10">
-                <form
-                    role="form"
-                    className="space-y-8"
-                    onSubmit={async (event) => {
-                        event.preventDefault();
-                        await submit();
+            <>
+                <button
+                    className={video.isPublished ? "button button-secondary w-full" : "button button-primary w-full"}
+                    onClick={async () => {
+                        try {
+                            setError(undefined);
+                            if (video.isPublished) await dispatch(unpublishVideo(video.id));
+                            else await dispatch(publishVideo(video.id));
+                        } catch(error) {
+                            setError(error as APIErrorResponse);
+                        }
                     }}
                 >
-                    <PencilIcon className="w-7 h-7 text-indigo-400" />
+                    {video.isPublished ? "Unpublish" : "Publish"}
+                </button>
+                <div className="rounded-lg bg-gray-900 px-10 py-12 shadow-2xl border border-indigo-300/10">
+                    <form
+                        role="form"
+                        className="space-y-8"
+                        onSubmit={async (event) => {
+                            event.preventDefault();
+                            await submit();
+                        }}
+                    >
+                        <PencilIcon className="w-7 h-7 text-indigo-400" />
                         <fieldset className="space-y-4">
                             <label>
                                 <span>Title:</span>
@@ -89,11 +104,12 @@ const VideoEdit = (): ReactElement | null => {
                                 <span>Edit video</span>
                             </span>
                         </button>
-                    {error && error.errorMessage ? (
-                        <span className="form-error text-center w-full capitalize">{error.errorMessage}</span>
-                    ) : undefined}
-                </form>
-            </div>
+                        {error && error.errorMessage ? (
+                            <span className="form-error text-center w-full capitalize">{error.errorMessage}</span>
+                        ) : undefined}
+                    </form>
+                </div>
+            </>
         );
     } else return null;
 }

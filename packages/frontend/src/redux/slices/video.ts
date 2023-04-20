@@ -1,11 +1,11 @@
-import { createEntityAdapter, createSelector, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { Video } from "../../types";
 import { GenericState, RootState } from "./index";
 import {
     addVideo,
     fetchAllPublishedVideos,
     fetchAllVideosByCreatorId,
-    fetchPublishedVideoById, updateVideo
+    fetchPublishedVideoById, publishVideo, unpublishVideo, updateVideo
 } from "../actions/video";
 
 export const VideoAdapter = createEntityAdapter<Video>({
@@ -41,12 +41,22 @@ export const VideoSlice = createSlice({
             .addCase(addVideo.fulfilled, (state): void => {
                 state.status = "finished";
             })
+            .addCase(publishVideo.fulfilled, (state, { payload }): void => {
+                VideoAdapter.updateOne(state, { id: payload.data.id, changes: payload.data });
+                state.status = "finished";
+            })
+            .addCase(unpublishVideo.fulfilled, (state, { payload }): void => {
+                VideoAdapter.updateOne(state, { id: payload.data.id, changes: payload.data });
+                state.status = "finished";
+            })
             .addMatcher(
                 isAnyOf(
                     fetchAllPublishedVideos.pending,
                     fetchPublishedVideoById.pending,
                     addVideo.pending,
                     updateVideo.pending,
+                    publishVideo.pending,
+                    unpublishVideo.pending
                 ),
                 (state) => {
                     state.status = "loading";
@@ -57,7 +67,9 @@ export const VideoSlice = createSlice({
                     fetchAllPublishedVideos.rejected,
                     fetchPublishedVideoById.rejected,
                     addVideo.rejected,
-                    updateVideo.rejected
+                    updateVideo.rejected,
+                    publishVideo.rejected,
+                    unpublishVideo.rejected
                 ),
                 (state) => {
                     state.status = "error";
