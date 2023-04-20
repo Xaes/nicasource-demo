@@ -1,11 +1,13 @@
 import { useContext } from "react";
 import { Context } from "../context/auth";
 import { logout as sessionLogout, login as sessionLogin, LoginParams } from "../services/auth";
+import { Creator } from "../types";
 
 export interface AuthHookReturn {
     logout: () => void
     login: (params: LoginParams) => void
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    creator?: Creator,
 }
 
 export default (): AuthHookReturn => {
@@ -13,14 +15,14 @@ export default (): AuthHookReturn => {
 
     const logout = () => {
         sessionLogout();
-        context.setLoggedIn(false);
+        context.setCreator(undefined);
     };
 
     const login = async (params: LoginParams): Promise<void> => {
-        await sessionLogin({ ...params, credentialType: "password" });
-        context.setLoggedIn(true);
+        const response = await sessionLogin({ ...params, credentialType: "password" });
+        context.setCreator(response.data.creator);
     };
 
-    return { logout, login, isLoggedIn: context.isLoggedInOnContext };
+    return { logout, login, creator: context.creator, isLoggedIn: context.isLoggedInOnContext };
 
 };

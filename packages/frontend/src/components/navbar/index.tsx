@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import LogoSVG from "../../assets/logo.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Config from "../../../config";
 import useAuth from "../../hooks/useAuth";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
@@ -34,12 +34,15 @@ const Navbar = (): ReactElement => {
                         </>
                     ) : (
                         <>
-                            <Link
+                            <NavLink
                                 to={Config.LINKS.STUDIO}
-                                className="font-semibold text-slate-400 hover:text-white transition-colors"
+                                className={({ isActive }) =>
+                                    isActive ? "font-semibold text-indigo-500" :
+                                    "font-semibold text-slate-400 hover:text-white transition-colors"
+                                }
                             >
                                 Your Studio
-                            </Link>
+                            </NavLink>
                             <Link
                                 to={Config.LINKS.UPLOAD_VIDEO}
                                 className="button button-primary !flex items-center space-x-2"

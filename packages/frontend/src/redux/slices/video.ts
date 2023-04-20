@@ -1,7 +1,12 @@
-import { createEntityAdapter, createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSelector, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { Video } from "../../types";
 import { GenericState, RootState } from "./index";
-import { addVideo, fetchAllPublishedVideos, fetchPublishedVideoById } from "../actions/video";
+import {
+    addVideo,
+    fetchAllPublishedVideos,
+    fetchAllVideosByCreatorId,
+    fetchPublishedVideoById
+} from "../actions/video";
 
 export const VideoAdapter = createEntityAdapter<Video>({
     selectId: (model: Video) => model.id
@@ -23,6 +28,10 @@ export const VideoSlice = createSlice({
             })
             .addCase(fetchPublishedVideoById.fulfilled, (state, { payload }): void => {
                 VideoAdapter.addOne(state, payload.data);
+                state.status = "finished";
+            })
+            .addCase(fetchAllVideosByCreatorId.fulfilled, (state, { payload }): void => {
+                VideoAdapter.addMany(state, payload.data);
                 state.status = "finished";
             })
             .addCase(addVideo.fulfilled, (state): void => {

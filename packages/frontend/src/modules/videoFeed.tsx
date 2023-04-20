@@ -9,7 +9,8 @@ import VideoList from "../components/videoList";
 
 const VideoFeed = (): ReactElement => {
     const dispatch = useDispatch<AppDispatch>();
-    const videoList = useSelector((state: RootState) => selectAll(state));
+    // TODO: Create a custom redux selector for optimization.
+    const videoList = useSelector((state: RootState) => selectAll(state).filter(video => video.isPublished));
     const videoStatus = useSelector((state: RootState) => state.Video.status);
 
     useEffect(() => {

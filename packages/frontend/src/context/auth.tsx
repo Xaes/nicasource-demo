@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useState } from "react";
 import { isLoggedIn } from "../services/auth";
+import { Creator } from "../types";
 
 interface Props {
     children: ReactNode
@@ -7,20 +8,24 @@ interface Props {
 
 interface AuthContextState {
     isLoggedInOnContext: boolean,
-    setLoggedIn: (isLogged: boolean) => void
+    creator?: Creator,
+    setCreator: (creator?: Creator) => void
 }
 
 const AuthContext = createContext<AuthContextState>({
     isLoggedInOnContext: isLoggedIn(),
-    setLoggedIn: () => undefined
+    setCreator: () => undefined
 });
 
 const Provider = (props: Props) => {
-    const [loggedIn, setIsLoggedIn] = useState<boolean>(isLoggedIn());
-    const logout = (isLogged: boolean) => setIsLoggedIn(isLogged);
+    const [creator, setCreator] = useState<Creator | undefined>();
 
     return (
-        <AuthContext.Provider value={{ isLoggedInOnContext: loggedIn, setLoggedIn: logout }}>
+        <AuthContext.Provider value={{
+            setCreator,
+            creator,
+            isLoggedInOnContext: !!creator,
+        }}>
             {props.children}
         </AuthContext.Provider>
     );

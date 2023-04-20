@@ -9,6 +9,7 @@ import Layout from "./components/layout";
 import Video from "./pages/video";
 import UploadVideo from "./modules/uploadVideo";
 import AuthRoute from "./components/authRoute";
+import Studio from "./pages/studio";
 
 const App = (): ReactElement => {
 
@@ -36,6 +37,10 @@ const App = (): ReactElement => {
                 {
                     path: Config.LINKS.UPLOAD_VIDEO,
                     element: <AuthRoute><UploadVideo /></AuthRoute>
+                },
+                {
+                    path: Config.LINKS.STUDIO,
+                    element: <AuthRoute><Studio /></AuthRoute>
                 }
             ]
         },

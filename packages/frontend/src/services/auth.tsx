@@ -36,16 +36,21 @@ export interface SessionToken {
     expiredAt: string;
 }
 
+export interface LoginResponse {
+    session: SessionToken,
+    creator: Creator
+}
+
 export const isLoggedIn = (): boolean => !!getJwtToken();
 
 export const register = async (params: RegisterParams): Promise<APIOkSingleResponse<Creator>> => {
     return (await AxiosClient.post<APIOkSingleResponse<Creator>>("/user", params)).data;
 };
 
-export const login = async (params: LoginParams): Promise<APIOkSingleResponse<SessionToken>> => {
-    const sessionToken = (await AxiosClient.post<APIOkSingleResponse<SessionToken>>("user/login", params)).data;
-    setJwtToken(sessionToken.data.accessToken);
-    AxiosClient.defaults.headers.common["Authorization"] = `Bearer ${sessionToken.data.accessToken}`;
+export const login = async (params: LoginParams): Promise<APIOkSingleResponse<LoginResponse>> => {
+    const sessionToken = (await AxiosClient.post<APIOkSingleResponse<LoginResponse>>("user/login", params)).data;
+    setJwtToken(sessionToken.data.session.accessToken);
+    AxiosClient.defaults.headers.common["Authorization"] = `Bearer ${sessionToken.data.session.accessToken}`;
     return sessionToken;
 };
 

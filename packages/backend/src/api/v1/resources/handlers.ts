@@ -2,7 +2,15 @@ import { APIOkResponse, sendOkResponse, TypedRequest, TypedResponse } from "../.
 import { Creator } from "../../../domain/video/entities/creator";
 import AssetManager from "../../../domain/video/assetManager";
 import { Video } from "../../../domain/video/entities/video";
-import { AddCreatorParams, CreateVideoParams, CreatorIdParam, LoginParams, PatchVideoParams, VideoIdParam } from "./model";
+import {
+    AddCreatorParams,
+    CreateVideoParams,
+    CreatorIdParam,
+    LoginParams,
+    LoginResponse,
+    PatchVideoParams,
+    VideoIdParam
+} from "./model";
 import Auth from "../../../domain/auth/auth";
 import { SessionToken } from "../../../domain/auth/entities/sessiontoken";
 
@@ -18,10 +26,13 @@ export const PostUserCreateHandler = async (request: TypedRequest<AddCreatorPara
     sendOkResponse<Creator>(response, newCreator);
 };
 
-export const PostUserLoginHandler = async (request: TypedRequest<LoginParams>, response: TypedResponse<APIOkResponse<SessionToken>>): Promise<void> => {
+export const PostUserLoginHandler = async (request: TypedRequest<LoginParams>, response: TypedResponse<APIOkResponse<LoginResponse>>): Promise<void> => {
     const user = await AssetManager.findCreatorByEmail(request.body.email);
     const accessToken = await Auth.authenticate(user, request.body.credentialType, request.body.challenge);
-    sendOkResponse<SessionToken>(response, accessToken);
+    sendOkResponse<LoginResponse>(response, {
+        session: accessToken,
+        creator: user,
+    });
 };
 
 export const GetVideosHandler = async (request: TypedRequest, response: TypedResponse<APIOkResponse<Video>>): Promise<void> => {

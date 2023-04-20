@@ -1,6 +1,7 @@
-import { CreatorParams } from "../../../domain/video/entities/creator";
+import { Creator, CreatorParams } from "../../../domain/video/entities/creator";
 import { CredentialType } from "../../../domain/auth/entities/credential";
 import { UpdateVideoParams, VideoParams } from "../../../domain/video/entities/video";
+import { SessionToken } from "../../../domain/auth/entities/sessiontoken";
 
 export type AddCreatorParams = {
     creator: CreatorParams,
@@ -23,3 +24,8 @@ export type CreateVideoParams = Omit<VideoParams, "creatorId">;
 export type VideoIdParam = { videoId: string };
 
 export type PatchVideoParams = UpdateVideoParams;
+
+export type LoginResponse = {
+    session: SessionToken;
+    creator: Creator;
+}
