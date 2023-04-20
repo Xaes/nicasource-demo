@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { NavLink, Route, useMatch, useNavigate } from "react-router-dom";
+import { NavLink, useMatch, useNavigate } from "react-router-dom";
 import Config from "../../config";
 import RegisterForm from "../components/registerForm";
 import LoginForm from "../components/loginForm";
@@ -10,10 +10,10 @@ const SignUpAndIn = (): ReactElement => {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            setFeedback(undefined)
+            setFeedback(undefined);
         }, 5000);
         return () => clearTimeout(timeout);
-    }, [feedback])
+    }, [feedback]);
 
     const baseLinkClassName = "text-xl font-semibold";
     const isSignIn = useMatch(Config.LINKS.SIGNIN);
@@ -23,7 +23,7 @@ const SignUpAndIn = (): ReactElement => {
 
     const getLinkClassName = (active: boolean) => {
         const className = active ? "text-indigo-400" : "text-slate-400 hover:text-white";
-        return `${baseLinkClassName} ${className}`
+        return `${baseLinkClassName} ${className}`;
     };
 
     return (
@@ -31,7 +31,7 @@ const SignUpAndIn = (): ReactElement => {
             <div className="grid grid-cols-12 gap-20 items-center w-4/5 mx-auto">
                 <div className="col-span-7">
                     <img src={Illustration} alt="Illustration" className="mb-12 w-3/5" />
-                    <h1>We'd <span className="text-indigo-400">love</span> to see your content!</h1>
+                    <h1>We&apos;d <span className="text-indigo-400">love</span> to see your content!</h1>
                     <h4 className="text-slate-400 font-normal mt-4">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi beatae debitis,
                         dicta dignissimos eum expedita inventore.

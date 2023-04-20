@@ -9,6 +9,8 @@ export default {
         UPLOAD_VIDEO: "/upload"
     },
     API: {
-        URL: import.meta.env.VITE_API_URL || "localhost:8000/api/v1"
+        // ESLINT complains about import.meta being any.
+        // eslint-disable-next-line
+        URL: import.meta.env.VITE_API_URL as string || "localhost:8000/api/v1"
     }
 };

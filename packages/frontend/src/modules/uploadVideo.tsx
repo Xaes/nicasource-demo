@@ -8,7 +8,7 @@ const UploadVideo = (): ReactElement => {
                 <UploadVideoForm />
             </div>
         </section>
-    )
+    );
 };
 
 export default UploadVideo;

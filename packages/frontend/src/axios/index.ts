@@ -6,7 +6,7 @@ const AxiosClient = axios.create({
     baseURL: Config.API.URL
 });
 
-AxiosClient.interceptors.response.use(undefined, (error: AxiosError) => {
+AxiosClient.interceptors.response.use(undefined, (error: AxiosError): unknown => {
     if (error.response) {
         if (error.response.status === 401) {
             logout();
@@ -15,6 +15,6 @@ AxiosClient.interceptors.response.use(undefined, (error: AxiosError) => {
             return Promise.reject(error.response.data);
         } else console.error(error);
     } else console.error(error);
-})
+});
 
 export default AxiosClient;

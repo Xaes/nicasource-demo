@@ -19,6 +19,7 @@
         "@typescript-eslint/no-misused-promises": [ "error", { "checksVoidReturn": false } ],
         "react/react-in-jsx-scope": "off",
         "react/jsx-uses-react": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
     },
     "parserOptions": {

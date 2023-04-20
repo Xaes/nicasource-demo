@@ -29,7 +29,8 @@ const LoginForm = (props: Props): ReactElement => {
                 await login({
                     email: items.email.value as string,
                     challenge: items.password.value as string
-                })
+                });
+                props.onSuccess();
             } catch (error) {
                 setError(error as APIErrorResponse);
             }
@@ -82,7 +83,7 @@ const LoginForm = (props: Props): ReactElement => {
                 </span>
             </button>
         </form>
-    )
-}
+    );
+};
 
 export default LoginForm;

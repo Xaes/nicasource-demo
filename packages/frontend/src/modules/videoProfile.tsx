@@ -18,7 +18,7 @@ const VideoProfile = (): ReactElement => {
         (async () => {
             if (params.videoId) await dispatch(fetchPublishedVideoById(params.videoId));
         })();
-    }, [params.videoId])
+    }, [params.videoId]);
 
     return(
         <>
@@ -38,7 +38,7 @@ const VideoProfile = (): ReactElement => {
             ) : null}
             <Loading loading={!video && videoStatus === "loading"} />
         </>
-    )
+    );
 };
 
 export default VideoProfile;

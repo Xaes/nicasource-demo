@@ -19,7 +19,7 @@ const CreatorIcon = (props: Props): ReactElement => {
             </div>
             <p className="text-slate-200 text-sm font-semibold group-hover:text-indigo-500 transition-all">{props.creator.name}</p>
         </Link>
-    )
-}
+    );
+};
 
 export default CreatorIcon;

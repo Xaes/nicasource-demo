@@ -25,7 +25,7 @@ export const VideoSlice = createSlice({
                 VideoAdapter.addOne(state, payload.data);
                 state.status = "finished";
             })
-            .addCase(addVideo.fulfilled, (state, { payload }): void => {
+            .addCase(addVideo.fulfilled, (state): void => {
                 state.status = "finished";
             })
             .addMatcher(
@@ -44,7 +44,7 @@ export const VideoSlice = createSlice({
                     fetchPublishedVideoById.rejected,
                     addVideo.rejected
                 ),
-                (state, payload) => {
+                (state) => {
                     state.status = "error";
                 }
             );

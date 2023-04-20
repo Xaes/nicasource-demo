@@ -9,7 +9,7 @@ interface Props {
 
 const AuthRoute = (props: Props): ReactElement => {
     const { isLoggedIn } = useAuth();
-    return isLoggedIn ? <>{props.children}</> : <Navigate to={Config.LINKS.SIGNIN} />
+    return isLoggedIn ? <>{props.children}</> : <Navigate to={Config.LINKS.SIGNIN} />;
 };
 
 export default AuthRoute;

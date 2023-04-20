@@ -2,11 +2,10 @@ import Home from "./pages/home";
 import { ReactElement } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import Store from "./redux/store";
-import { BrowserRouter, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import Config from "../config";
 import SignUpAndIn from "./modules/signUpAndIn";
 import Layout from "./components/layout";
-import VideoProfile from "./modules/videoProfile";
 import Video from "./pages/video";
 import UploadVideo from "./modules/uploadVideo";
 import AuthRoute from "./components/authRoute";
@@ -40,7 +39,7 @@ const App = (): ReactElement => {
                 }
             ]
         },
-    ])
+    ]);
 
     return (
         <ReduxProvider store={Store}>

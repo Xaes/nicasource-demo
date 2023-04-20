@@ -13,7 +13,7 @@ interface AuthContextState {
 const AuthContext = createContext<AuthContextState>({
     isLoggedInOnContext: isLoggedIn(),
     setLoggedIn: () => undefined
-})
+});
 
 const Provider = (props: Props) => {
     const [loggedIn, setIsLoggedIn] = useState<boolean>(isLoggedIn());
@@ -23,7 +23,7 @@ const Provider = (props: Props) => {
         <AuthContext.Provider value={{ isLoggedInOnContext: loggedIn, setLoggedIn: logout }}>
             {props.children}
         </AuthContext.Provider>
-    )
+    );
 };
 
 export default Provider;

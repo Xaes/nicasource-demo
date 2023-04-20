@@ -15,4 +15,4 @@ export const fetchPublishedVideoById = createAsyncThunk<APIOkSingleResponse<Vide
 export const addVideo = createAsyncThunk<APIOkSingleResponse<Video>, CreateVideoParams>(
     "Video/CreateVideo",
     async (params: CreateVideoParams) => (await AxiosClient.post<APIOkSingleResponse<Video>>("/videos", params)).data
-)
+);

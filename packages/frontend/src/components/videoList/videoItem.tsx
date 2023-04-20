@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { UserIcon } from "@heroicons/react/24/outline";
 import { Video } from "../../types";
 import { Link } from "react-router-dom";
 import Config from "../../../config";

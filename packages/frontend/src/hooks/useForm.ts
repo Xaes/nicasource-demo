@@ -58,7 +58,7 @@ export default ({ items, onSubmit }: IFormProps): IFormReturn => {
         if (
             item.required &&
             typeof item.value === "string" &&
-            (item.value as string).length === 0
+            (item.value ).length === 0
         ) {
             itemHasError = true;
         }
@@ -108,7 +108,7 @@ export default ({ items, onSubmit }: IFormProps): IFormReturn => {
                     ...prevState,
                     items: { ...prevState.items, [fieldName]: validationResult },
                 };
-            } else return prevState;
+            } return prevState;
         });
     };
 
@@ -124,7 +124,7 @@ export default ({ items, onSubmit }: IFormProps): IFormReturn => {
                     ...prevState,
                     items: { ...prevState.items, [field]: newField },
                 };
-            } else return prevState;
+            } return prevState;
         });
     };
 
@@ -144,12 +144,12 @@ export const validateEmail = (value?: FormValue): boolean => {
     if (value) {
         const exp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         return exp.test(value as string);
-    } else return false;
+    } return false;
 };
 
 export const validateURL = (value?: FormValue): boolean => {
     if (value) {
         const exp = new RegExp(/^(ftp|http|https):\/\/[^ "]+$/);
         return exp.test(value as string);
-    } else return false;
-}
+    } return false;
+};

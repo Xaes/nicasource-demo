@@ -41,7 +41,7 @@ const RegisterForm = (props: Props): ReactElement => {
                 setError(error as APIErrorResponse);
             }
         }
-    })
+    });
 
     return (
         <form
@@ -99,7 +99,7 @@ const RegisterForm = (props: Props): ReactElement => {
                 </span>
             </button>
         </form>
-    )
-}
+    );
+};
 
 export default RegisterForm;

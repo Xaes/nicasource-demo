@@ -14,13 +14,13 @@ export default (): AuthHookReturn => {
     const logout = () => {
         sessionLogout();
         context.setLoggedIn(false);
-    }
+    };
 
-    const login = async (params: LoginParams) => {
+    const login = async (params: LoginParams): Promise<void> => {
         await sessionLogin({ ...params, credentialType: "password" });
         context.setLoggedIn(true);
-    }
+    };
 
-    return { logout, login, isLoggedIn: context.isLoggedInOnContext }
+    return { logout, login, isLoggedIn: context.isLoggedInOnContext };
 
-}
+};
