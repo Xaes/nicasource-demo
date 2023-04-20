@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import Config from "../../config";
-import { APIErrorResponse } from "../types";
+import { logout } from "../services/auth";
 
 const AxiosClient = axios.create({
     baseURL: Config.API.URL
@@ -8,7 +8,10 @@ const AxiosClient = axios.create({
 
 AxiosClient.interceptors.response.use(undefined, (error: AxiosError) => {
     if (error.response) {
-        if (error.response.status < 500) return Promise.reject(error.response.data);
+        if (error.response.status === 401) {
+            logout();
+            window.location.replace("/signin");
+        } else if (error.response.status < 500) return Promise.reject(error.response.data);
     } else console.error(error);
 })
 

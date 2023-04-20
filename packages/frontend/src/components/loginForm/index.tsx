@@ -1,11 +1,20 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import useForm, { validateEmail } from "../../hooks/useForm";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
+import { APIErrorResponse } from "../../types";
+import { LockClosedIcon } from "@heroicons/react/24/outline";
+import useAuth from "../../hooks/useAuth";
 
-const RegisterForm = (): ReactElement => {
+interface Props {
+    onSuccess: () => void
+}
+
+const LoginForm = (props: Props): ReactElement => {
+    const [error, setError] = useState<APIErrorResponse | undefined>(undefined);
+    const { login } = useAuth();
+
     const { registerValue, submit, loading, items } = useForm({
         items: {
-            name: { required: true, },
             email: {
                 required: true,
                 validate: {
@@ -15,17 +24,29 @@ const RegisterForm = (): ReactElement => {
             password: { required: true }
         },
         onSubmit: async ({ items }) => {
-            console.log("login, hehe");
+            try {
+                setError(undefined);
+                await login({
+                    email: items.email.value as string,
+                    challenge: items.password.value as string
+                })
+            } catch (error) {
+                setError(error as APIErrorResponse);
+            }
         }
-    })
+    });
 
     return (
         <form
             role="form"
             className="space-y-8"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={async (event) => {
+                event.preventDefault();
+                await submit();
+            }}
         >
-            <fieldset className="space-y-6">
+            <LockClosedIcon className="w-8 h-8 text-indigo-400" />
+            <fieldset className="space-y-4">
                 <label>
                     <span>Email:</span>
                     <input
@@ -46,6 +67,9 @@ const RegisterForm = (): ReactElement => {
                     />
                     {items.password.hasError && ( <span className="form-error">Password is required.</span> )}
                 </label>
+                {error && error.errorMessage ? (
+                    <span className="form-error text-center w-full capitalize">{error.errorMessage}</span>
+                ) : undefined}
             </fieldset>
             <button
                 disabled={loading}
@@ -61,4 +85,4 @@ const RegisterForm = (): ReactElement => {
     )
 }
 
-export default RegisterForm;
+export default LoginForm;

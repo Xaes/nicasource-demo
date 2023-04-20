@@ -18,7 +18,8 @@ export interface RegisterParams {
 
 export interface LoginParams {
     email: string;
-    password: string;
+    challenge: string;
+    credentialType?: "password";
 }
 
 export function getJwtToken() {
@@ -35,6 +36,8 @@ export interface SessionToken {
     expiredAt: string;
 }
 
+export const isLoggedIn = (): boolean => !!getJwtToken()
+
 export const register = async (params: RegisterParams): Promise<APIOkSingleResponse<Creator>> => {
     return (await AxiosClient.post<APIOkSingleResponse<Creator>>("/user", params)).data;
 }
@@ -42,5 +45,11 @@ export const register = async (params: RegisterParams): Promise<APIOkSingleRespo
 export const login = async (params: LoginParams): Promise<APIOkSingleResponse<SessionToken>> => {
     const sessionToken = (await AxiosClient.post<APIOkSingleResponse<SessionToken>>("user/login", params)).data;
     setJwtToken(sessionToken.data.accessToken);
+    AxiosClient.defaults.headers.common["Authorization"] = `Bearer ${getJwtToken()}`;
     return sessionToken;
+}
+
+export const logout = (): void => {
+    sessionStorage.removeItem("jwt");
+    AxiosClient.defaults.headers.common["Authorization"] = undefined;
 }

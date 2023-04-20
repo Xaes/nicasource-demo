@@ -22,7 +22,7 @@ const SignUpAndIn = (): ReactElement => {
     const navigate = useNavigate();
 
     const getLinkClassName = (active: boolean) => {
-        const className = active ? "text-indigo-500" : "text-slate-400 hover:text-white";
+        const className = active ? "text-indigo-400" : "text-slate-400 hover:text-white";
         return `${baseLinkClassName} ${className}`
     };
 
@@ -31,7 +31,7 @@ const SignUpAndIn = (): ReactElement => {
             <div className="grid grid-cols-12 gap-20 items-center w-4/5 mx-auto">
                 <div className="col-span-7">
                     <img src={Illustration} alt="Illustration" className="mb-12 w-3/5" />
-                    <h1>We'd <span className="text-indigo-500">love</span> to see your content!</h1>
+                    <h1>We'd <span className="text-indigo-400">love</span> to see your content!</h1>
                     <h4 className="text-slate-400 font-normal mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi beatae debitis, dicta dignissimos eum expedita inventore.</h4>
                 </div>
                 <div className="col-span-5">
@@ -59,7 +59,13 @@ const SignUpAndIn = (): ReactElement => {
                                     }}
                                 />
                             ) : undefined}
-                            {isSignIn && <LoginForm />}
+                            {isSignIn && (
+                                <LoginForm
+                                    onSuccess={(): void => {
+                                        navigate(Config.LINKS.SIGNIN);
+                                    }}
+                                />
+                            )}
                         </div>
                         {feedback ? (
                             <span className="form-success text-center w-full">{feedback}</span>

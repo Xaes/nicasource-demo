@@ -3,14 +3,13 @@ import useForm, { validateEmail } from "../../hooks/useForm";
 import { register } from "../../services/auth";
 import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { APIErrorResponse } from "../../types";
-import { useNavigate } from "react-router-dom";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 interface Props {
     onSuccess: () => void
 }
 
 const RegisterForm = (props: Props): ReactElement => {
-    const navigate = useNavigate();
     const [error, setError] = useState<APIErrorResponse | undefined>(undefined);
 
     const { registerValue, loading, submit, items } = useForm({
@@ -53,7 +52,8 @@ const RegisterForm = (props: Props): ReactElement => {
                 await submit();
             }}
         >
-            <fieldset className="space-y-6">
+            <UserPlusIcon className="w-8 h-8 text-indigo-400" />
+            <fieldset className="space-y-4">
                 <label>
                     <span>Email:</span>
                     <input
@@ -84,7 +84,7 @@ const RegisterForm = (props: Props): ReactElement => {
                     />
                     {items.password.hasError && ( <span className="form-error">Password is required.</span> )}
                 </label>
-                {error ? (
+                {error && error.errorMessage ? (
                     <span className="form-error text-center w-full capitalize">{error.errorMessage}</span>
                 ) : undefined}
             </fieldset>
