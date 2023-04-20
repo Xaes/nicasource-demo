@@ -65,7 +65,7 @@ const SignUpAndIn = (): ReactElement => {
                             {isSignIn && (
                                 <LoginForm
                                     onSuccess={(): void => {
-                                        navigate(Config.LINKS.SIGNIN);
+                                        navigate(Config.LINKS.STUDIO);
                                     }}
                                 />
                             )}

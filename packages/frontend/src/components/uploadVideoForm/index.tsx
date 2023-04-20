@@ -6,10 +6,13 @@ import useForm, { validateURL } from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { addVideo } from "../../redux/actions/video";
+import { useNavigate } from "react-router-dom";
+import Config from "../../../config";
 
 const CreateVideoForm = (): ReactElement => {
     const dispatch = useDispatch<AppDispatch>();
     const [error, setError] = useState<APIErrorResponse | undefined>(undefined);
+    const navigate = useNavigate();
 
     const { registerValue, submit, loading, items } = useForm({
         items: {
@@ -43,6 +46,7 @@ const CreateVideoForm = (): ReactElement => {
             onSubmit={async (event) => {
                 event.preventDefault();
                 await submit();
+                navigate(Config.LINKS.STUDIO);
             }}
         >
             <VideoCameraIcon className="w-8 h-8 text-indigo-400" />
