@@ -23,25 +23,18 @@ const VideoProfile = (): ReactElement => {
     return(
         <>
             {video ? (
-                <section>
-                    <div className="grid grid-cols-12 gap-x-16">
-                        <div className="col-span-9 space-y-8">
-                            <div className="border border-indigo-300/10 rounded-lg shadow-xl">
-                                <video src={video.videoUrl} className="aspect-video	bg-black rounded-lg min-w-full" controls={true} autoPlay={true} />
-                            </div>
-                            <div className="space-y-6">
-                                <header className="space-y-2">
-                                    <h2>{video.title}</h2>
-                                    <p className="text-slate-400">{video.description}</p>
-                                </header>
-                                <CreatorIcon creator={video.creator} />
-                            </div>
-                        </div>
-                        <div className="col-span-3 space-y-8">
-                            <h3>Most Recent Videos</h3>
-                        </div>
+                <div className="space-y-8">
+                    <div className="border border-indigo-300/10 rounded-lg shadow-xl">
+                        <video src={video.videoUrl} className="aspect-video	bg-black rounded-lg min-w-full" controls={true} autoPlay={true} />
                     </div>
-                </section>
+                    <div className="space-y-6">
+                        <header className="space-y-2">
+                            <h2>{video.title}</h2>
+                            <p className="text-slate-400">{video.description}</p>
+                        </header>
+                        <CreatorIcon creator={video.creator} />
+                    </div>
+                </div>
             ) : null}
             <Loading loading={!video && videoStatus === "loading"} />
         </>

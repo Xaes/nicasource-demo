@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 import Navbar from "../navbar";
+import { Outlet } from "react-router-dom";
 
 interface Props {
     children?: ReactNode,
@@ -12,7 +13,7 @@ const Layout = (props: Props): ReactElement => {
         <div className="space-y-16">
             <Navbar />
             <main className={`container mx-auto min-h-[70vh]${contentClassName}`}>
-                {props.children}
+                <Outlet />
             </main>
             <footer className="container mx-auto flex justify-between text-slate-400 py-8">
                 <small>All rights reserved.</small>

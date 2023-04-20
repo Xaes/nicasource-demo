@@ -3,6 +3,12 @@ export interface APIOkSingleResponse<T> {
     statusCode: number;
 }
 
+export interface APIErrorResponse {
+    errorName: string;
+    errorMessage: string;
+    statusCode: number;
+}
+
 export interface APIOkMultipleResponse<T> {
     data: T[];
     statusCode: number;

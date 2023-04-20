@@ -1,16 +1,15 @@
-import React from "react";
-import Layout from "../components/layout";
+import React, { ReactElement } from "react";
 import VideoFeed from "../modules/videoFeed";
 
-const Home = () => {
+const Home = (): ReactElement => {
     return (
-        <Layout className="space-y-12">
+        <div className="space-y-12">
             <header className="space-y-2">
                 <h2>Home</h2>
                 <p className="text-slate-400">Browse all our videos</p>
             </header>
             <VideoFeed />
-        </Layout>
+        </div>
     );
 };
 

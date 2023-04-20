@@ -48,3 +48,43 @@ h6 {
 .h6, h6 {
     @apply text-sm;
 }
+
+/** Buttons **/
+
+.button {
+    @apply py-2 px-5 inline-block font-bold rounded-lg transition-all shadow-xl hover:shadow-2xl;
+}
+
+.button.button-primary {
+    @apply border border-indigo-300/10 bg-indigo-600 text-white hover:bg-indigo-400 hover:text-white;
+}
+
+.button[disabled] {
+    @apply bg-indigo-900 text-slate-400 select-none pointer-events-none;
+}
+
+/** Inputs **/
+
+input {
+    @apply bg-gray-950 w-full text-slate-200 py-2 px-4 rounded-lg border border-gray-100/10 block font-semibold focus:border-indigo-500 active:border-indigo-500 transition-colors;
+}
+
+label {
+    @apply block;
+}
+
+label span {
+    @apply text-slate-400;
+}
+
+label > span + input {
+    @apply mt-2;
+}
+
+.form-error {
+    @apply font-semibold text-red-500 text-sm mt-2 block;
+}
+
+.form-success {
+    @apply font-semibold text-green-500 text-sm mt-2 block;
+}

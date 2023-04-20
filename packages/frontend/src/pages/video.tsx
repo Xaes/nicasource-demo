@@ -4,9 +4,16 @@ import VideoProfile from "../modules/videoProfile";
 
 const VideoPage = (): ReactElement => {
     return (
-        <Layout className="space-y-12">
-            <VideoProfile />
-        </Layout>
+        <section>
+            <div className="grid grid-cols-12 gap-x-16">
+                <div className="col-span-9 space-y-8">
+                    <VideoProfile />
+                </div>
+                <div className="col-span-3 space-y-8">
+                    <h3>Most Recent Videos</h3>
+                </div>
+            </div>
+        </section>
     );
 }
 

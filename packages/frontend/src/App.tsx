@@ -2,18 +2,43 @@ import Home from "./pages/home";
 import { ReactElement } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import Store from "./redux/store";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import VideoPage from "./pages/video";
-
-const router = createBrowserRouter([
-    { path: "/", element: <Home /> },
-    { path: "/video/:videoId", element: <VideoPage />}
-])
+import { BrowserRouter, useRoutes } from "react-router-dom";
+import Config from "../config";
+import SignUpAndIn from "./modules/signUpAndIn";
+import Layout from "./components/layout";
+import VideoProfile from "./modules/videoProfile";
+import Video from "./pages/video";
 
 const App = (): ReactElement => {
+
+    const routes = useRoutes([
+        {
+            path: Config.LINKS.HOME,
+            element: <Layout />,
+            children: [
+                {
+                    index: true,
+                    element: <Home />
+                },
+                {
+                    path: Config.LINKS.VIDEO_PAGE(":videoId"),
+                    element: <Video />
+                },
+                {
+                    path: Config.LINKS.SIGNIN,
+                    element: <SignUpAndIn />
+                },
+                {
+                    path: Config.LINKS.SIGNUP,
+                    element: <SignUpAndIn />
+                }
+            ]
+        },
+    ])
+
     return (
         <ReduxProvider store={Store}>
-            <RouterProvider router={router} />
+            {routes}
         </ReduxProvider>
     );
 };
