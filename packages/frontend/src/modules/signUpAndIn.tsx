@@ -32,7 +32,10 @@ const SignUpAndIn = (): ReactElement => {
                 <div className="col-span-7">
                     <img src={Illustration} alt="Illustration" className="mb-12 w-3/5" />
                     <h1>We'd <span className="text-indigo-400">love</span> to see your content!</h1>
-                    <h4 className="text-slate-400 font-normal mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi beatae debitis, dicta dignissimos eum expedita inventore.</h4>
+                    <h4 className="text-slate-400 font-normal mt-4">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi beatae debitis,
+                        dicta dignissimos eum expedita inventore.
+                    </h4>
                 </div>
                 <div className="col-span-5">
                     <div className="space-y-8">

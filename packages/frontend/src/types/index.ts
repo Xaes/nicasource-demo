@@ -34,3 +34,9 @@ export interface Video extends EntityAttributes {
     creatorId: string;
     creator: Creator
 }
+
+export interface CreateVideoParams {
+    title: string;
+    description: string;
+    videoUrl: string;
+}

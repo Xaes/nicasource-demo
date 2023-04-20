@@ -142,8 +142,14 @@ export default ({ items, onSubmit }: IFormProps): IFormReturn => {
 
 export const validateEmail = (value?: FormValue): boolean => {
     if (value) {
-        const exp =
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return exp.test((value as string).toLowerCase());
+        const exp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        return exp.test(value as string);
     } else return false;
 };
+
+export const validateURL = (value?: FormValue): boolean => {
+    if (value) {
+        const exp = new RegExp(/^(ftp|http|https):\/\/[^ "]+$/);
+        return exp.test(value as string);
+    } else return false;
+}

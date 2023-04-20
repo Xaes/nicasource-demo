@@ -8,6 +8,7 @@ import SignUpAndIn from "./modules/signUpAndIn";
 import Layout from "./components/layout";
 import VideoProfile from "./modules/videoProfile";
 import Video from "./pages/video";
+import UploadVideo from "./modules/uploadVideo";
 
 const App = (): ReactElement => {
 
@@ -31,6 +32,10 @@ const App = (): ReactElement => {
                 {
                     path: Config.LINKS.SIGNUP,
                     element: <SignUpAndIn />
+                },
+                {
+                    path: Config.LINKS.UPLOAD_VIDEO,
+                    element: <UploadVideo />
                 }
             ]
         },

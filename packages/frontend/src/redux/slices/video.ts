@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { Video } from "../../types";
 import { GenericState, RootState } from "./index";
-import { fetchAllPublishedVideos, fetchPublishedVideoById } from "../actions/video";
+import { addVideo, fetchAllPublishedVideos, fetchPublishedVideoById } from "../actions/video";
 
 export const VideoAdapter = createEntityAdapter<Video>({
     selectId: (model: Video) => model.id
@@ -25,10 +25,15 @@ export const VideoSlice = createSlice({
                 VideoAdapter.addOne(state, payload.data);
                 state.status = "finished";
             })
+            .addCase(addVideo.fulfilled, (state, { payload }): void => {
+                VideoAdapter.addOne(state, payload.data);
+                state.status = "finished";
+            })
             .addMatcher(
                 isAnyOf(
                     fetchAllPublishedVideos.pending,
-                    fetchPublishedVideoById.pending
+                    fetchPublishedVideoById.pending,
+                    addVideo.pending
                 ),
                 (state) => {
                     state.status = "loading";
@@ -37,11 +42,11 @@ export const VideoSlice = createSlice({
             .addMatcher(
                 isAnyOf(
                     fetchAllPublishedVideos.rejected,
-                    fetchPublishedVideoById.rejected
+                    fetchPublishedVideoById.rejected,
+                    addVideo.rejected
                 ),
                 (state, payload) => {
                     state.status = "error";
-                    console.log(payload);
                 }
             );
     }

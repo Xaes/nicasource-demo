@@ -1,12 +1,14 @@
 import { ReactElement } from "react";
 import LogoSVG from "../../assets/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Config from "../../../config";
 import useAuth from "../../hooks/useAuth";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
 
 const Navbar = (): ReactElement => {
     const { isLoggedIn, logout } = useAuth();
+    const navigate = useNavigate();
+
     return (
         <nav className="container mx-auto">
             <div className="flex items-center justify-between pt-8">
@@ -41,7 +43,10 @@ const Navbar = (): ReactElement => {
                             </Link>
                             <button
                                 className="font-semibold text-slate-400 hover:text-white transition-colors"
-                                onClick={logout}
+                                onClick={() => {
+                                    logout();
+                                    navigate(Config.LINKS.HOME);
+                                }}
                             >
                                 Logout
                             </button>

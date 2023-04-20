@@ -19,8 +19,6 @@ const Provider = (props: Props) => {
     const [loggedIn, setIsLoggedIn] = useState<boolean>(isLoggedIn());
     const logout = (isLogged: boolean) => setIsLoggedIn(isLogged);
 
-    console.log(loggedIn);
-
     return (
         <AuthContext.Provider value={{ isLoggedInOnContext: loggedIn, setLoggedIn: logout }}>
             {props.children}

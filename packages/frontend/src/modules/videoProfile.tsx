@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchAllPublishedVideos, fetchPublishedVideoById } from "../redux/actions/video";
+import { fetchPublishedVideoById } from "../redux/actions/video";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
 import { RootState } from "../redux/slices";
