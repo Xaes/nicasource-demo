@@ -26,7 +26,7 @@ POSTGRES_PORT=5432
 ```
 4. Run the following command: `yarn run backend-dev`. This command will: Call `docker-compose`, run migrations on the backend, and call Nodemon in order to start `dev` mode.
 
-## Domain Drive Approach
+## Domain Driven Approach
 
 ![Domain UML Diagram](./design/domain.png)
 
@@ -57,4 +57,15 @@ The following UML diagram represents a video sharing application and can be inte
 - The `Auth` class manages users and credentials for authentication. The `User` interface represents a user that can be authenticated, and the `Credential` entity represents a user's credential that can be verified. The `SessionToken` value object contains an access token and a refresh token for authorization.
 
 The UML diagram reflects a well-structured domain model that separates concerns and reflects the business logic of the video sharing application.
+
+## Improvements
+
+There are a lot of things that can be improved, but because of the short span of time I was tasked with they could not be done. Some of those things are:
+
+- Transactional Control (I was planning to take the Unit of Work approach).
+- Various fixes to UI (and add responsive design).
+- Add missing functions to front-end that already exists on the back-end: likes, follows.
+- Add more unit tests (I did a few just to test my Domain Services), integration tests.
+- Clean and Tidy up the code.
+- Bug fixing.
 
